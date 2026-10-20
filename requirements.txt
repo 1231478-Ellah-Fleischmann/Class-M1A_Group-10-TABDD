@@ -1,0 +1,6 @@
+# Dependências comuns (acrescentar as da BD vetorial quando for escolhida)
+python-dotenv
+mysql-connector-python
+pymongo
+sentence-transformers
+pandas

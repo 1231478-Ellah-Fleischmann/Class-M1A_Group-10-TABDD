@@ -1,0 +1,25 @@
+# Credenciais e configuração local
+.env
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+
+# Dados grandes e gerados (versionar apenas scripts e amostras pequenas)
+data/raw/
+data/processed/
+*.dump
+*.sqlite
+
+# Editores e sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
