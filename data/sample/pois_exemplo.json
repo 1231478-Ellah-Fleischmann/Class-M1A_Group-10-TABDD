@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "nome": "Torre dos Clérigos",
+    "cidade": "Porto",
+    "categoria": "monumento",
+    "descricao": "Torre barroca do século XVIII no centro histórico, com vista panorâmica sobre a cidade e o rio Douro."
+  },
+  {
+    "id": 2,
+    "nome": "Museu Nacional Soares dos Reis",
+    "cidade": "Porto",
+    "categoria": "museu",
+    "descricao": "Museu de arte portuguesa com pintura e escultura dos séculos XIX e XX, instalado num palácio histórico."
+  },
+  {
+    "id": 3,
+    "nome": "Mercado do Bolhão",
+    "cidade": "Porto",
+    "categoria": "mercado",
+    "descricao": "Mercado tradicional e movimentado no centro, com bancas de peixe, fruta, flores e produtos regionais."
+  },
+  {
+    "id": 4,
+    "nome": "Praia de Moledo",
+    "cidade": "Caminha",
+    "categoria": "praia",
+    "descricao": "Praia de areia fina com águas calmas e pinhal junto ao mar, ideal para famílias com crianças."
+  },
+  {
+    "id": 5,
+    "nome": "Parque de Serralves",
+    "cidade": "Porto",
+    "categoria": "parque",
+    "descricao": "Jardins amplos e tranquilos com museu de arte contemporânea, bons para passeios ao ar livre em família."
+  },
+  {
+    "id": 6,
+    "nome": "Tasca da Ribeira",
+    "cidade": "Porto",
+    "categoria": "restaurante",
+    "descricao": "Restaurante familiar junto ao rio com pratos tradicionais portugueses, como tripas e bacalhau."
+  },
+  {
+    "id": 7,
+    "nome": "Museu Calouste Gulbenkian",
+    "cidade": "Lisboa",
+    "categoria": "museu",
+    "descricao": "Museu com uma coleção de arte antiga e moderna, rodeado por um jardim calmo no centro de Lisboa."
+  },
+  {
+    "id": 8,
+    "nome": "Miradouro de Santa Luzia",
+    "cidade": "Lisboa",
+    "categoria": "miradouro",
+    "descricao": "Miradouro com azulejos e flores, com vista sobre os telhados de Alfama e o rio Tejo."
+  }
+]
