@@ -10,10 +10,11 @@ from app.services.embeddings import embed_text, embed_texts, get_dimension
 from app.services.poi_indexing import SAMPLE_FILE, build_text, load_pois
 from benchmarks.casos_teste import TESTES, posicao_esperada
 
-# (rótulo, nome do modelo, coleção da experiência)
+# (rótulo, nome do modelo, coleção, prefixo das pesquisas, prefixo dos textos dos POIs)
 MODELOS = [
-    ("MiniLM", "paraphrase-multilingual-MiniLM-L12-v2", "exp_modelo_minilm"),
-    ("MPNet", "paraphrase-multilingual-mpnet-base-v2", "exp_modelo_mpnet"),
+    ("MiniLM", "paraphrase-multilingual-MiniLM-L12-v2", "exp_modelo_minilm", "", ""),
+    ("MPNet", "paraphrase-multilingual-mpnet-base-v2", "exp_modelo_mpnet", "", ""),
+    ("E5-small", "intfloat/multilingual-e5-small", "exp_modelo_e5", "query: ", "passage: "),
 ]
 
 
@@ -25,7 +26,7 @@ if __name__ == "__main__":
     posicoes = {}   # rótulo -> lista de posições, uma por pesquisa
     resumo = {}     # rótulo -> métricas finais
 
-    for rotulo, modelo, colecao in MODELOS:
+    for rotulo, modelo, colecao, prefixo_pesquisa, prefixo_texto in MODELOS:
         print(f"\n=== {rotulo} ===")
 
         # 1. Carregar o modelo e criar a coleção com a dimensão certa
@@ -33,7 +34,7 @@ if __name__ == "__main__":
         create_collection(client, vector_size=dimensao, collection_name=colecao, recreate=True)
 
         # 2. Indexar os POIs
-        vetores = embed_texts(textos, modelo)
+        vetores = embed_texts([prefixo_texto + t for t in textos], modelo)
         upsert_pois(client, pois, vetores, collection_name=colecao)
 
         # 3. Correr as pesquisas e medir
@@ -41,7 +42,7 @@ if __name__ == "__main__":
         tempos = []
         for texto, esperados in TESTES:
             inicio = time.perf_counter()
-            vetor = embed_text(texto, modelo)
+            vetor = embed_text(prefixo_pesquisa + texto, modelo)
             tempos.append(time.perf_counter() - inicio)
 
             resultados = search_pois(client, vetor, limit=len(pois), collection_name=colecao)
