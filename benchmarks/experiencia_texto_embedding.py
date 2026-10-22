@@ -1,25 +1,11 @@
 from app.services.poi_indexing import SAMPLE_FILE, index_pois, load_pois
 from app.services.semantic_search import semantic_search
+from benchmarks.casos_teste import TESTES, posicao_esperada
 
 COLECOES = {
     "descricao": "exp_pois_descricao",
     "enriquecido": "exp_pois_enriquecido",
 }
-
-# (pesquisa, ids considerados resposta certa)
-TESTES = [
-    ("Museus para visitar no Porto", {2}),
-    ("Museus em Lisboa", {7}),
-    ("Sítio calmo para ir com crianças", {4, 5}),
-    ("Comida tradicional portuguesa", {6}),
-    ("Vista bonita sobre o rio em Lisboa", {8}),
-    ("Monumento no Porto com vista panorâmica", {1}),
-    ("Quiet beach for families", {4}),
-    ("Mercado com produtos regionais no Porto", {3}),
-    ("Jardins para passear no Porto", {5}),
-    ("Onde comer no Porto", {6}),
-]
-
 
 def posicao_esperada(resultados: list[dict], ids_esperados: set[int]) -> int | None:
     """Devolve a posição (1, 2, 3...) do primeiro resultado certo, ou None se não aparecer."""

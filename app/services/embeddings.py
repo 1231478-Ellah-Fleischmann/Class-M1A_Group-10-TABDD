@@ -9,27 +9,28 @@ load_dotenv()
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "paraphrase-multilingual-MiniLM-L12-v2")
 
 
-@lru_cache(maxsize=1)
-def get_model() -> SentenceTransformer:
-    """Carrega o modelo de embeddings. Só carrega da primeira vez; depois reutiliza."""
-    print(f"A carregar o modelo '{EMBEDDING_MODEL}'...")
-    return SentenceTransformer(EMBEDDING_MODEL)
+@lru_cache(maxsize=4)
+def get_model(model_name: str = EMBEDDING_MODEL) -> SentenceTransformer:
+    """Carrega um modelo de embeddings. Cada modelo só é carregado uma vez."""
+    print(f"A carregar o modelo '{model_name}'...")
+    return SentenceTransformer(model_name)
 
 
-def embed_texts(texts: list[str]) -> list[list[float]]:
+def embed_texts(texts: list[str], model_name: str = EMBEDDING_MODEL) -> list[list[float]]:
     """Transforma uma lista de textos numa lista de vetores (normalizados)."""
-    vectors = get_model().encode(texts, normalize_embeddings=True)
+    vectors = get_model(model_name).encode(texts, normalize_embeddings=True)
     return vectors.tolist()
 
 
-def embed_text(text: str) -> list[float]:
+def embed_text(text: str, model_name: str = EMBEDDING_MODEL) -> list[float]:
     """Transforma um único texto num vetor."""
-    return embed_texts([text])[0]
+    return embed_texts([text], model_name)[0]
 
-@lru_cache(maxsize=1)
-def get_dimension() -> int:
+
+@lru_cache(maxsize=4)
+def get_dimension(model_name: str = EMBEDDING_MODEL) -> int:
     """Devolve o número de dimensões dos vetores gerados pelo modelo."""
-    return len(embed_text("teste"))
+    return len(embed_text("teste", model_name))
 
 if __name__ == "__main__":
     frases = [
