@@ -2,7 +2,14 @@ import os
 
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, PointStruct, VectorParams
+from qdrant_client.models import (
+    Distance,
+    FieldCondition,
+    Filter,
+    MatchValue,
+    PointStruct,
+    VectorParams,
+)
 
 load_dotenv()
 
@@ -68,6 +75,33 @@ def upsert_pois(
 def count_points(client: QdrantClient, collection_name: str = VECTOR_COLLECTION) -> int:
     """Devolve quantos pontos existem na coleção."""
     return client.count(collection_name=collection_name, exact=True).count
+
+def search_pois(
+    client: QdrantClient,
+    query_vector: list[float],
+    limit: int = 5,
+    cidade: str | None = None,
+    categoria: str | None = None,
+    collection_name: str = VECTOR_COLLECTION,
+) -> list[dict]:
+    """Devolve os POIs mais semelhantes ao vetor da pesquisa, do mais para o menos semelhante."""
+    condicoes = []
+    if cidade:
+        condicoes.append(FieldCondition(key="cidade", match=MatchValue(value=cidade)))
+    if categoria:
+        condicoes.append(FieldCondition(key="categoria", match=MatchValue(value=categoria)))
+
+    filtro = Filter(must=condicoes) if condicoes else None
+
+    resultado = client.query_points(
+        collection_name=collection_name,
+        query=query_vector,
+        query_filter=filtro,
+        limit=limit,
+        with_payload=True,
+    )
+
+    return [{"id": p.id, "score": p.score, **p.payload} for p in resultado.points]
 
 
 if __name__ == "__main__":
