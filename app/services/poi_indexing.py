@@ -8,7 +8,7 @@ from app.repositories.vector.qdrant_repository import (
     get_client,
     upsert_pois,
 )
-from app.services.embeddings import embed_texts, get_dimension
+from app.services.embeddings import embed_documents, get_dimension
 
 SAMPLE_FILE = Path("data/sample/pois_exemplo.json")
 
@@ -47,15 +47,19 @@ def index_pois(
     )
 
     textos = [build_text(poi, modo_texto) for poi in pois]
-    vectors = embed_texts(textos)
+    vectors = embed_documents(textos)
 
     return upsert_pois(client, pois, vectors, collection_name=collection_name)
 
 
 if __name__ == "__main__":
+    import sys
+
+    recriar = "--recriar" in sys.argv
+
     pois = load_pois(SAMPLE_FILE)
     print(f"{len(pois)} POIs lidos de {SAMPLE_FILE}")
 
-    inseridos = index_pois(pois)
+    inseridos = index_pois(pois, recreate=recriar)
     print(f"{inseridos} pontos inseridos/atualizados")
     print("Total de pontos na coleção:", count_points(get_client()))

@@ -8,6 +8,16 @@ load_dotenv()
 
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "paraphrase-multilingual-MiniLM-L12-v2")
 
+# Prefixos exigidos por alguns modelos: (prefixo das pesquisas, prefixo dos documentos).
+# Modelos que não estão aqui não usam prefixos.
+PREFIXOS_POR_MODELO = {
+    "intfloat/multilingual-e5-small": ("query: ", "passage: "),
+}
+
+
+def get_prefixos(model_name: str = EMBEDDING_MODEL) -> tuple[str, str]:
+    """Devolve (prefixo das pesquisas, prefixo dos documentos) para o modelo."""
+    return PREFIXOS_POR_MODELO.get(model_name, ("", ""))
 
 @lru_cache(maxsize=4)
 def get_model(model_name: str = EMBEDDING_MODEL) -> SentenceTransformer:
@@ -31,6 +41,18 @@ def embed_text(text: str, model_name: str = EMBEDDING_MODEL) -> list[float]:
 def get_dimension(model_name: str = EMBEDDING_MODEL) -> int:
     """Devolve o número de dimensões dos vetores gerados pelo modelo."""
     return len(embed_text("teste", model_name))
+
+
+def embed_query(text: str, model_name: str = EMBEDDING_MODEL) -> list[float]:
+    """Vetor de uma PESQUISA de um utilizador (com o prefixo de pesquisa, se o modelo o exigir)."""
+    prefixo_pesquisa, _ = get_prefixos(model_name)
+    return embed_text(prefixo_pesquisa + text, model_name)
+
+
+def embed_documents(texts: list[str], model_name: str = EMBEDDING_MODEL) -> list[list[float]]:
+    """Vetores dos TEXTOS dos POIs (com o prefixo de documento, se o modelo o exigir)."""
+    _, prefixo_documento = get_prefixos(model_name)
+    return embed_texts([prefixo_documento + t for t in texts], model_name)
 
 if __name__ == "__main__":
     frases = [

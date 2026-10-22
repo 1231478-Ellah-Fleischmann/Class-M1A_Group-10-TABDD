@@ -1,5 +1,5 @@
 from app.repositories.vector.qdrant_repository import VECTOR_COLLECTION, get_client, search_pois
-from app.services.embeddings import embed_text
+from app.services.embeddings import embed_query
 
 
 def semantic_search(
@@ -10,7 +10,7 @@ def semantic_search(
     collection_name: str = VECTOR_COLLECTION,
 ) -> list[dict]:
     """Pesquisa em linguagem natural: transforma o texto num vetor e procura no Qdrant."""
-    vetor = embed_text(texto)
+    vetor = embed_query(texto)
     return search_pois(
         get_client(),
         vetor,
