@@ -1,0 +1,562 @@
+[
+  {
+    "id": 1,
+    "nome": "Museu Nacional Soares dos Reis",
+    "cidade": "Porto",
+    "categoria": "museu",
+    "descricao": "Instalado no antigo Palácio dos Carrancas, este museu reúne pintura, escultura, cerâmica e peças de ourivesaria, com destaque para a obra de António Soares dos Reis. As salas históricas permitem uma visita tranquila, adequada a adultos interessados em arte e estudantes. Reserve cerca de duas horas e confirme os horários e os preços dos bilhetes antes de entrar."
+  },
+  {
+    "id": 2,
+    "nome": "Museu do Carro Elétrico",
+    "cidade": "Porto",
+    "categoria": "museu",
+    "descricao": "Antigos elétricos, uniformes e documentos contam a evolução dos transportes públicos nesta coleção instalada junto ao rio Douro. As famílias com crianças costumam apreciar os veículos de diferentes épocas, enquanto os entusiastas de engenharia encontram pormenores técnicos interessantes. A visita demora aproximadamente uma hora, e a acessibilidade a algumas áreas pode depender da configuração dos veículos expostos."
+  },
+  {
+    "id": 3,
+    "nome": "Museu de História Natural e da Ciência da Universidade do Porto",
+    "cidade": "Porto",
+    "categoria": "museu",
+    "descricao": "Entre minerais, espécimes zoológicos e objetos científicos, este espaço universitário oferece uma perspetiva sobre a investigação e o ensino das ciências. É indicado para famílias curiosas, estudantes e visitantes que prefiram exposições educativas a coleções exclusivamente artísticas. A duração aconselhada ronda os noventa minutos, embora o percurso e a disponibilidade de determinadas áreas possam variar consoante as exposições temporárias."
+  },
+  {
+    "id": 4,
+    "nome": "Palácio da Bolsa",
+    "cidade": "Porto",
+    "categoria": "monumento",
+    "descricao": "Construído no século XIX para representar a Associação Comercial do Porto, o edifício combina arquitetura neoclássica com interiores cerimoniais. O Salão Árabe destaca-se pela decoração exuberante, sendo frequente a realização de visitas guiadas em diferentes línguas. O ambiente é formal e histórico, adequado a casais e grupos culturais; a entrada costuma ser paga e o acesso a certas salas depende das atividades em curso."
+  },
+  {
+    "id": 5,
+    "nome": "Sé do Porto",
+    "cidade": "Porto",
+    "categoria": "igreja",
+    "descricao": "Erguida num ponto elevado da cidade, a Sé combina elementos românicos, góticos e barrocos, refletindo sucessivas transformações ao longo dos séculos. O claustro revestido de azulejos merece uma observação demorada, sobretudo para quem aprecia arte religiosa. A zona envolvente tem bastante movimento durante o dia, e as escadas e desníveis podem dificultar a visita a pessoas com mobilidade reduzida."
+  },
+  {
+    "id": 6,
+    "nome": "Parque da Cidade do Porto",
+    "cidade": "Porto",
+    "categoria": "parque",
+    "descricao": "Prados extensos, lagos e caminhos arborizados fazem deste parque uma escolha frequente para caminhadas, piqueniques e passeios de bicicleta. Famílias com crianças encontram espaço para brincar, enquanto corredores e praticantes de exercício aproveitam os percursos compridos. A entrada é gratuita e existem zonas abertas durante todo o dia, embora seja aconselhável levar água e verificar as condições meteorológicas antes de uma visita prolongada."
+  },
+  {
+    "id": 7,
+    "nome": "Praia de Matosinhos",
+    "cidade": "Porto",
+    "categoria": "praia",
+    "descricao": "A extensa faixa de areia e as ondas regulares atraem banhistas, praticantes de surf e grupos de amigos, sobretudo nos meses mais quentes. Nas imediações existem escolas de desportos aquáticos, esplanadas e restaurantes de peixe. O vento pode tornar a permanência menos confortável fora do verão, e a temperatura da água costuma ser baixa; durante a época balnear, importa respeitar as indicações dos nadadores-salvadores."
+  },
+  {
+    "id": 8,
+    "nome": "Restaurante Fogueira do Cais",
+    "cidade": "Porto",
+    "categoria": "restaurante",
+    "descricao": "Numa sala de ambiente informal, a cozinha aposta em pratos portugueses preparados na brasa, incluindo polvo, legumes grelhados e posta de vitela. O espaço imaginado atrai grupos de amigos e famílias que procuram uma refeição substancial sem cerimónias. Conte com cerca de 18 a 30 euros por pessoa, sem bebidas especiais; ao jantar, reservar mesa é uma boa ideia para evitar esperas."
+  },
+  {
+    "id": 9,
+    "nome": "Café Janela de Cobre",
+    "cidade": "Porto",
+    "categoria": "café",
+    "descricao": "O balcão estreito, as mesas de madeira e o aroma de café acabado de moer criam um ambiente propício a uma pausa durante a manhã. Há galão, pastelaria tradicional e algumas opções vegetarianas ligeiras, pensadas para trabalhadores, estudantes e viajantes. Um pequeno-almoço simples poderá custar entre 4 e 7 euros, e o espaço tende a ficar mais movimentado antes das dez horas."
+  },
+  {
+    "id": 10,
+    "nome": "Mercado do Bolhão",
+    "cidade": "Porto",
+    "categoria": "mercado",
+    "descricao": "Entre bancas de fruta, flores, peixe e produtos regionais, este mercado conserva uma forte ligação ao quotidiano comercial da cidade. Vale a pena conversar com os vendedores e provar especialidades portuguesas, desde queijos a conservas e doces. O movimento é mais intenso durante a manhã, especialmente aos sábados, e os corredores podem ficar apertados para carrinhos de bebé ou visitantes com mobilidade condicionada."
+  },
+  {
+    "id": 11,
+    "nome": "Museu Nacional do Azulejo",
+    "cidade": "Lisboa",
+    "categoria": "museu",
+    "descricao": "A evolução do azulejo português é apresentada através de painéis, peças religiosas e composições decorativas de diferentes séculos. Instalado no antigo Convento da Madre de Deus, o museu permite perceber como esta técnica influenciou fachadas, igrejas e interiores domésticos. A visita interessa a estudantes de história da arte e a famílias com curiosidade pela cerâmica; conte com cerca de duas horas e confirme o preço atualizado do bilhete."
+  },
+  {
+    "id": 12,
+    "nome": "Museu da Marioneta",
+    "cidade": "Lisboa",
+    "categoria": "museu",
+    "descricao": "Marionetas de fios, luvas, sombras e máscaras revelam tradições cénicas de várias partes do mundo. As crianças podem descobrir diferentes formas de contar histórias, enquanto adultos interessados em teatro apreciam os mecanismos e os figurinos expostos. O ambiente é geralmente tranquilo durante a semana, e uma visita de aproximadamente uma hora permite explorar as principais coleções sem pressa; algumas atividades familiares podem exigir inscrição adicional."
+  },
+  {
+    "id": 13,
+    "nome": "Museu de Lisboa — Palácio Pimenta",
+    "cidade": "Lisboa",
+    "categoria": "museu",
+    "descricao": "Maquetas, pinturas, documentos e objetos quotidianos mostram como a capital portuguesa mudou ao longo de vários séculos. O edifício setecentista e os seus jardins acrescentam uma dimensão arquitetónica à visita, tornando o percurso interessante para estudantes e visitantes mais velhos. A exposição permanente exige cerca de noventa minutos, e os jardins oferecem um intervalo agradável quando o tempo está ameno."
+  },
+  {
+    "id": 14,
+    "nome": "Torre de Belém",
+    "cidade": "Lisboa",
+    "categoria": "monumento",
+    "descricao": "Esta fortificação manuelina do século XVI foi construída junto ao Tejo para integrar o sistema defensivo da entrada fluvial. Terraços, guaritas e elementos marítimos recordam a época dos Descobrimentos, atraindo visitantes interessados em arquitetura e história naval. A subida inclui escadas estreitas e pode ser cansativa para pessoas idosas; nos períodos de maior procura, a espera para entrar prolonga-se facilmente."
+  },
+  {
+    "id": 15,
+    "nome": "Mosteiro dos Jerónimos",
+    "cidade": "Lisboa",
+    "categoria": "monumento",
+    "descricao": "A pedra trabalhada com motivos vegetais e marítimos torna este mosteiro manuelino uma referência da arquitetura portuguesa do século XVI. No interior, o claustro oferece uma sequência de galerias onde se podem observar detalhes escultóricos e diferentes jogos de luz. É uma visita indicada para apreciadores de património, embora os grupos turísticos tornem algumas zonas ruidosas; convém reservar pelo menos duas horas."
+  },
+  {
+    "id": 16,
+    "nome": "Igreja de São Roque",
+    "cidade": "Lisboa",
+    "categoria": "igreja",
+    "descricao": "Por detrás de uma fachada relativamente sóbria, encontram-se capelas ricamente decoradas, talha dourada e revestimentos de mármore. A Capela de São João Batista chama a atenção pela combinação de materiais e pelo trabalho artístico minucioso. O ambiente interior costuma ser silencioso, apropriado a visitantes interessados em arte sacra e a quem procura uma pausa do movimento urbano; importa respeitar os momentos de culto."
+  },
+  {
+    "id": 17,
+    "nome": "Praia de Carcavelos",
+    "cidade": "Lisboa",
+    "categoria": "praia",
+    "descricao": "A areia larga e as ondas consistentes fazem desta praia uma escolha habitual para surfistas, famílias e grupos de jovens. Existem escolas de surf, instalações de apoio e estabelecimentos onde se pode almoçar sem abandonar a zona costeira. No verão, a afluência aumenta consideravelmente e os lugares de estacionamento escasseiam; fora da época balnear, o vento e a ondulação exigem cuidados adicionais junto à água."
+  },
+  {
+    "id": 18,
+    "nome": "Miradouro da Senhora do Monte",
+    "cidade": "Lisboa",
+    "categoria": "miradouro",
+    "descricao": "Do alto deste ponto panorâmico observam-se telhados, colinas e vários monumentos da capital, com uma perspetiva especialmente interessante ao final da tarde. Casais, fotógrafos e pequenos grupos costumam permanecer algum tempo a apreciar a vista. A entrada é gratuita, mas a subida pelas ruas inclinadas pode ser exigente para pessoas com mobilidade reduzida; ao pôr do sol, o local tende a ficar bastante concorrido."
+  },
+  {
+    "id": 19,
+    "nome": "Restaurante Tacho de Alfama",
+    "cidade": "Lisboa",
+    "categoria": "restaurante",
+    "descricao": "A ementa imaginada privilegia receitas caseiras, como bacalhau assado, arroz de polvo e ensopado de legumes, servidos em doses generosas. A sala é pequena e acolhedora, adequada a casais ou famílias que preferem uma refeição sem música demasiado alta. Os preços rondam os 14 a 24 euros por pessoa, dependendo do prato; ao fim de semana, a reserva antecipada ajuda a garantir lugar."
+  },
+  {
+    "id": 20,
+    "nome": "Bar Ritmo de Lata",
+    "cidade": "Lisboa",
+    "categoria": "bar",
+    "descricao": "Luzes coloridas e uma seleção de música eletrónica dão o tom a este bar fictício, pensado para grupos de amigos e jovens que gostam de dançar. A carta inclui cocktails, cerveja e bebidas sem álcool, com preços estimados entre 7 e 12 euros por bebida elaborada. O volume sonoro aumenta depois das 23 horas, pelo que não será a opção mais indicada para conversas prolongadas."
+  },
+  {
+    "id": 21,
+    "nome": "Museu dos Biscainhos",
+    "cidade": "Braga",
+    "categoria": "museu",
+    "descricao": "Este antigo palácio setecentista conserva mobiliário, cerâmica, pintura e objetos que ajudam a compreender a vida doméstica das elites portuguesas. Os jardins históricos, com caminhos e elementos ornamentais, complementam a exposição interior. A visita é adequada a adultos interessados em história social e a grupos escolares; reserve cerca de uma hora e meia para observar as salas e passear pelos espaços exteriores."
+  },
+  {
+    "id": 22,
+    "nome": "Museu de Arqueologia D. Diogo de Sousa",
+    "cidade": "Braga",
+    "categoria": "museu",
+    "descricao": "Peças romanas, inscrições, cerâmicas e objetos encontrados em escavações regionais ilustram a ocupação antiga do território. A exposição ajuda a contextualizar a importância de Bracara Augusta e apresenta informação útil para estudantes e visitantes curiosos pela arqueologia. As salas são organizadas por temas, permitindo uma visita relativamente calma de uma a duas horas; os horários podem variar em feriados e épocas especiais."
+  },
+  {
+    "id": 23,
+    "nome": "Sé de Braga",
+    "cidade": "Braga",
+    "categoria": "igreja",
+    "descricao": "Com origens medievais, a Sé reúne elementos românicos, góticos e barrocos num conjunto que reflete a longa história religiosa da região. O interior contém capelas, túmulos e peças de arte sacra que justificam uma visita atenta. Peregrinos, grupos escolares e amantes de arquitetura encontram aqui diferentes motivos de interesse; durante as celebrações litúrgicas, algumas áreas podem estar limitadas aos visitantes."
+  },
+  {
+    "id": 24,
+    "nome": "Santuário do Bom Jesus do Monte",
+    "cidade": "Braga",
+    "categoria": "monumento",
+    "descricao": "A escadaria monumental, decorada com fontes e figuras simbólicas, conduz a um santuário rodeado de vegetação. É possível subir a pé ou utilizar o antigo elevador hidráulico, uma alternativa interessante para quem prefere evitar o esforço físico. Famílias, peregrinos e caminhantes aproveitam os jardins e as vistas, enquanto a entrada na área exterior é gratuita; alguns serviços e espaços interiores podem ter horários próprios."
+  },
+  {
+    "id": 25,
+    "nome": "Parque da Ponte",
+    "cidade": "Braga",
+    "categoria": "parque",
+    "descricao": "Árvores maduras, zonas relvadas e caminhos para caminhar tornam este parque apropriado para uma pausa entre visitas ao centro urbano. Aos fins de semana, encontram-se famílias com crianças, pessoas idosas e praticantes de exercício ligeiro. O espaço exterior é de acesso gratuito, e há áreas adequadas para descansar à sombra; depois de períodos de chuva, alguns troços podem ficar escorregadios."
+  },
+  {
+    "id": 26,
+    "nome": "Restaurante Panela de Centeio",
+    "cidade": "Braga",
+    "categoria": "restaurante",
+    "descricao": "Neste restaurante fictício, a cozinha regional é reinterpretada com ingredientes sazonais, incluindo rojões, legumes assados e sobremesas à base de ovos. A decoração simples e as mesas próximas favorecem refeições familiares, embora o espaço possa ser movimentado ao almoço. O custo estimado situa-se entre 13 e 22 euros por pessoa; quem procura opções vegetarianas deverá consultar a ementa do dia."
+  },
+  {
+    "id": 27,
+    "nome": "Café Ponto de Canela",
+    "cidade": "Braga",
+    "categoria": "café",
+    "descricao": "O cheiro a canela e a pão acabado de cozer acompanha uma oferta de torradas, bolos caseiros e café servido ao balcão. O ambiente é descontraído, com clientes habituais pela manhã e estudantes durante a tarde. Um lanche simples deverá custar entre 3 e 6 euros, e as mesas interiores são mais confortáveis nos dias frios; a disponibilidade de lugares pode diminuir à hora de saída das escolas."
+  },
+  {
+    "id": 28,
+    "nome": "Museu Nacional de Machado de Castro",
+    "cidade": "Coimbra",
+    "categoria": "museu",
+    "descricao": "Escultura, pintura, ourivesaria e objetos religiosos compõem uma coleção instalada num antigo complexo episcopal. O criptopórtico romano, situado nos níveis inferiores, revela estruturas que ajudam a compreender a evolução histórica do centro de Coimbra. A visita interessa a estudantes, historiadores e famílias com adolescentes; conte com duas horas para explorar as principais áreas, tendo em conta que o edifício apresenta desníveis e escadas."
+  },
+  {
+    "id": 29,
+    "nome": "Museu da Ciência da Universidade de Coimbra",
+    "cidade": "Coimbra",
+    "categoria": "museu",
+    "descricao": "Instrumentos científicos antigos, coleções de história natural e exposições interativas aproximam a ciência de visitantes de diferentes idades. As crianças podem descobrir princípios físicos, enquanto adultos interessados na história do ensino observam equipamentos utilizados em investigação. O percurso pode ocupar entre uma hora e meia e duas horas, e algumas atividades educativas requerem marcação; convém verificar a acessibilidade das salas específicas antes da visita."
+  },
+  {
+    "id": 30,
+    "nome": "Biblioteca Joanina",
+    "cidade": "Coimbra",
+    "categoria": "monumento",
+    "descricao": "As estantes de madeira exótica, os dourados e os tetos pintados caracterizam esta biblioteca universitária do século XVIII. O espaço conserva livros antigos e exige condições ambientais rigorosas para proteger o acervo, pelo que as visitas decorrem de forma organizada. É especialmente interessante para amantes de literatura, história e arquitetura, mas a entrada costuma ser paga e pode estar sujeita a horários definidos e reservas."
+  },
+  {
+    "id": 31,
+    "nome": "Mosteiro de Santa Clara-a-Velha",
+    "cidade": "Coimbra",
+    "categoria": "monumento",
+    "descricao": "As ruínas góticas deste mosteiro revelam a relação histórica entre a arquitetura religiosa e as cheias do rio Mondego. Um centro interpretativo apresenta os trabalhos arqueológicos e a recuperação do edifício, ajudando a contextualizar a vida monástica medieval. O ambiente é sereno, adequado a visitantes interessados em património, e a visita demora cerca de uma hora; após chuva intensa, vale a pena confirmar eventuais limitações de acesso."
+  },
+  {
+    "id": 32,
+    "nome": "Jardim Botânico da Universidade de Coimbra",
+    "cidade": "Coimbra",
+    "categoria": "parque",
+    "descricao": "Coleções de plantas, árvores de grande porte e alamedas sombreadas oferecem um percurso tranquilo a poucos minutos das zonas universitárias. Casais, famílias e pessoas idosas podem passear ao seu ritmo, observar espécies identificadas e descansar nos bancos. O acesso a determinadas áreas pode obedecer a horários específicos, e os caminhos inclinados exigem alguma atenção; na primavera, a diversidade vegetal torna a visita especialmente interessante."
+  },
+  {
+    "id": 33,
+    "nome": "Restaurante Colher de Barro",
+    "cidade": "Coimbra",
+    "categoria": "restaurante",
+    "descricao": "O menu deste estabelecimento fictício combina pratos tradicionais, como chanfana e arroz de pato, com sopas e alternativas vegetarianas. A sala tem um ambiente familiar e pouco formal, adequado a almoços demorados ou refeições entre visitas culturais. Os preços previstos variam entre 12 e 21 euros por pessoa, sem bebidas; durante a hora de almoço dos dias úteis, é provável que o serviço seja mais rápido com reserva."
+  },
+  {
+    "id": 34,
+    "nome": "Praia da Barra",
+    "cidade": "Aveiro",
+    "categoria": "praia",
+    "descricao": "Perto do farol mais alto de Portugal, esta praia combina uma faixa de areia extensa com zonas procuradas por praticantes de surf e bodyboard. As famílias podem passear junto à água, enquanto os jovens encontram escolas e espaços para atividades aquáticas. Há cafés e restaurantes nas imediações, mas o vento atlântico é frequente; durante o verão, a vigilância balnear e o estacionamento variam consoante a zona."
+  },
+  {
+    "id": 35,
+    "nome": "Museu de Aveiro",
+    "cidade": "Aveiro",
+    "categoria": "museu",
+    "descricao": "Instalado no antigo Convento de Jesus, este museu reúne arte sacra, pintura e objetos associados à história religiosa da região. A ligação à princesa Santa Joana é particularmente relevante para compreender o passado do edifício. Os visitantes interessados em património podem explorar as salas sem pressa, enquanto os claustros oferecem uma pausa visual; reserve cerca de uma hora e meia e confirme os preços de entrada."
+  },
+  {
+    "id": 36,
+    "nome": "Ecomuseu Marinha da Troncalhada",
+    "cidade": "Aveiro",
+    "categoria": "museu",
+    "descricao": "As salinas tradicionais permitem observar como a água do mar é transformada em sal através da evaporação e do trabalho dos marnotos. Painéis explicativos apresentam os ciclos sazonais, as ferramentas utilizadas e a importância económica desta atividade. O percurso ao ar livre é interessante para famílias e amantes da natureza, mas há pouca sombra e alguns caminhos são irregulares; leve calçado confortável e água nos dias quentes."
+  },
+  {
+    "id": 37,
+    "nome": "Restaurante Rede de Açafrão",
+    "cidade": "Aveiro",
+    "categoria": "restaurante",
+    "descricao": "A proposta deste restaurante fictício mistura sabores da ria com receitas contemporâneas, incluindo arroz de peixe, legumes da estação e pratos com algas. O ambiente é descontraído, com mesas adequadas a casais e pequenos grupos que preferem experimentar combinações diferentes. A refeição poderá custar entre 17 e 28 euros por pessoa; para opções sem peixe ou marisco, convém consultar antecipadamente os ingredientes disponíveis."
+  },
+  {
+    "id": 38,
+    "nome": "Café Nuvem de Açúcar",
+    "cidade": "Aveiro",
+    "categoria": "café",
+    "descricao": "Bolos húmidos, sandes simples e bebidas quentes compõem a oferta deste café fictício, pensado para uma pausa entre passeios. O espaço tem uma decoração clara e mesas pequenas, sendo frequentado por estudantes, casais e visitantes que procuram um lanche económico. Espere pagar aproximadamente 4 a 8 euros por pessoa; ao meio da tarde, a procura por pastelaria acabada de preparar pode aumentar o tempo de espera."
+  },
+  {
+    "id": 39,
+    "nome": "Castelo de Guimarães",
+    "cidade": "Guimarães",
+    "categoria": "monumento",
+    "descricao": "Associado à formação do reino português, este castelo medieval conserva muralhas, torres e um recinto que permite compreender a função defensiva da fortificação. Crianças e adultos podem explorar os espaços exteriores e observar a paisagem envolvente, embora algumas escadas sejam íngremes. O percurso costuma demorar entre quarenta minutos e uma hora, e a entrada em determinadas áreas pode estar condicionada por trabalhos de conservação."
+  },
+  {
+    "id": 40,
+    "nome": "Museu de Alberto Sampaio",
+    "cidade": "Guimarães",
+    "categoria": "museu",
+    "descricao": "Localizado no centro histórico, este museu conserva ourivesaria, escultura, pintura e peças ligadas à história religiosa da região. Entre os objetos expostos encontram-se obras que ajudam a compreender as práticas artísticas e devocionais de diferentes épocas. A visita é indicada para quem aprecia coleções históricas mais especializadas; conte com cerca de uma hora e verifique se existem exposições temporárias ou alterações de horário."
+  },
+  {
+    "id": 41,
+    "nome": "Paço dos Duques de Bragança",
+    "cidade": "Guimarães",
+    "categoria": "monumento",
+    "descricao": "Construído no século XV, este paço apresenta chaminés monumentais, tapeçarias, mobiliário antigo e salas que evocam a vida aristocrática medieval. O percurso interior permite observar influências arquitetónicas de diferentes regiões europeias. É uma visita adequada a famílias, estudantes e apreciadores de história, com duração aproximada de uma hora; algumas áreas têm escadas e podem exigir atenção de visitantes com mobilidade reduzida."
+  },
+  {
+    "id": 42,
+    "nome": "Montanha da Penha",
+    "cidade": "Guimarães",
+    "categoria": "parque",
+    "descricao": "Entre formações graníticas, árvores antigas e trilhos florestais, esta zona verde oferece oportunidades para caminhadas, piqueniques e observação da paisagem. As famílias podem aproveitar as áreas de descanso, enquanto caminhantes experientes escolhem percursos mais exigentes. A entrada nos espaços exteriores é geralmente gratuita, mas o transporte por teleférico tem custo próprio; nos dias de chuva, algumas zonas rochosas tornam-se escorregadias."
+  },
+  {
+    "id": 43,
+    "nome": "Restaurante Tacho de Loureiro",
+    "cidade": "Guimarães",
+    "categoria": "restaurante",
+    "descricao": "A cozinha deste restaurante fictício valoriza receitas do Minho, com rojões, arroz de feijão, bacalhau assado e sobremesas tradicionais. O ambiente é familiar e descontraído, adequado a almoços de grupo ou jantares tranquilos em casal. Uma refeição completa deverá custar entre 13 e 23 euros por pessoa, dependendo das escolhas; ao fim de semana, a reserva é recomendável."
+  },
+  {
+    "id": 44,
+    "nome": "Café Grão de Luar",
+    "cidade": "Guimarães",
+    "categoria": "café",
+    "descricao": "Com mesas de madeira e iluminação suave, este café fictício convida a uma pausa durante um passeio pelo centro histórico. A oferta inclui café de especialidade, chocolate quente, tostas e bolos preparados diariamente, atraindo estudantes, casais e trabalhadores remotos. O gasto médio situa-se entre 4 e 9 euros por pessoa, e o ambiente tende a ser mais silencioso durante a manhã do que ao final da tarde."
+  },
+  {
+    "id": 45,
+    "nome": "Palácio Nacional de Sintra",
+    "cidade": "Sintra",
+    "categoria": "monumento",
+    "descricao": "As duas grandes chaminés cónicas dominam o perfil deste palácio, cuja história atravessa vários períodos da monarquia portuguesa. No interior, azulejos, tetos pintados e salas cerimoniais revelam mudanças de gosto e de utilização ao longo dos séculos. A visita interessa a famílias e entusiastas de arquitetura, demora cerca de uma hora e meia e pode exigir espera durante os meses de maior afluência turística."
+  },
+  {
+    "id": 46,
+    "nome": "Museu do Ar",
+    "cidade": "Sintra",
+    "categoria": "museu",
+    "descricao": "A história da aviação portuguesa é apresentada através de aeronaves, uniformes, motores e documentação histórica. Os visitantes podem conhecer a evolução dos transportes aéreos e observar equipamentos utilizados por diferentes gerações de pilotos. O espaço é especialmente apelativo para crianças curiosas e entusiastas de engenharia; a visita costuma durar entre uma e duas horas, mas a disponibilidade de certas áreas depende das condições operacionais."
+  },
+  {
+    "id": 47,
+    "nome": "Quinta da Regaleira",
+    "cidade": "Sintra",
+    "categoria": "monumento",
+    "descricao": "Jardins densos, grutas, torres e passagens subterrâneas compõem uma propriedade do início do século XX associada ao imaginário esotérico. O Poço Iniciático, com a sua escadaria em espiral, é um dos locais mais procurados pelos visitantes. Recomenda-se calçado antiderrapante e pelo menos duas horas para explorar o recinto; os caminhos irregulares e as escadas estreitas podem dificultar a circulação."
+  },
+  {
+    "id": 48,
+    "nome": "Praia da Adraga",
+    "cidade": "Sintra",
+    "categoria": "praia",
+    "descricao": "Enquadrada por falésias e formações rochosas, esta praia tem um ambiente mais natural do que as zonas balneares urbanas. É procurada por fotógrafos, casais e caminhantes, embora a ondulação possa ser forte e o acesso à água exija prudência. A oferta de serviços é limitada em comparação com praias maiores, pelo que convém verificar as condições do mar e levar agasalho quando o vento aumenta."
+  },
+  {
+    "id": 49,
+    "nome": "Miradouro da Cruz Alta",
+    "cidade": "Sintra",
+    "categoria": "miradouro",
+    "descricao": "Situado numa das zonas elevadas da serra, este ponto permite observar a vegetação envolvente e, em dias de céu limpo, extensas áreas da paisagem costeira. Caminhantes e fotógrafos apreciam o silêncio relativo, interrompido sobretudo pelos visitantes que percorrem os trilhos próximos. O acesso implica uma caminhada por terreno irregular, e a neblina pode reduzir bastante a visibilidade; leve água e roupa adequada à mudança de temperatura."
+  },
+  {
+    "id": 50,
+    "nome": "Restaurante Colher de Musgo",
+    "cidade": "Sintra",
+    "categoria": "restaurante",
+    "descricao": "Este restaurante fictício combina pratos portugueses com ingredientes sazonais, servindo sopa de legumes, peixe assado e opções vegetarianas com cogumelos e ervas aromáticas. A sala tem decoração rústica e um ambiente relativamente calmo, adequado a casais e famílias que procuram fugir às refeições apressadas. O preço médio estimado é de 16 a 27 euros por pessoa; reservar ao jantar pode evitar uma espera prolongada."
+  },
+  {
+    "id": 51,
+    "nome": "Templo Romano de Évora",
+    "cidade": "Évora",
+    "categoria": "monumento",
+    "descricao": "As colunas coríntias e a localização central fazem deste vestígio romano uma referência importante do património alentejano. Embora seja frequentemente associado a Diana, a identificação original do templo não está definitivamente estabelecida. A observação exterior é gratuita e pode ser feita em poucos minutos, mas vale a pena explorar os detalhes da pedra e relacioná-los com os restantes edifícios históricos das imediações."
+  },
+  {
+    "id": 52,
+    "nome": "Museu Nacional Frei Manuel do Cenáculo",
+    "cidade": "Évora",
+    "categoria": "museu",
+    "descricao": "A coleção reúne pintura, escultura, arqueologia e arte sacra, oferecendo uma visão ampla da produção artística regional e nacional. Entre os objetos expostos encontram-se peças de diferentes períodos, incluindo elementos ligados à história religiosa alentejana. O percurso é adequado a visitantes que preferem salas tranquilas e observação detalhada; reserve aproximadamente noventa minutos e confirme as condições de entrada, sobretudo em dias festivos."
+  },
+  {
+    "id": 53,
+    "nome": "Capela dos Ossos",
+    "cidade": "Évora",
+    "categoria": "igreja",
+    "descricao": "Revestida com ossos e crânios humanos, esta capela do século XVII apresenta uma reflexão religiosa sobre a mortalidade. A decoração provoca reações diferentes entre visitantes, sendo particularmente interessante para quem estuda a história das mentalidades e a arquitetura sacra. A visita é relativamente curta, mas o ambiente pode impressionar crianças pequenas; o acesso costuma estar integrado num circuito patrimonial com bilhete pago."
+  },
+  {
+    "id": 54,
+    "nome": "Jardim Público de Évora",
+    "cidade": "Évora",
+    "categoria": "parque",
+    "descricao": "Caminhos sombreados, bancos e zonas relvadas oferecem um intervalo tranquilo entre visitas ao centro histórico. O jardim inclui estruturas históricas e espaços onde famílias, leitores e pessoas idosas podem descansar sem necessidade de consumir num estabelecimento. A entrada é gratuita, e as primeiras horas da manhã são especialmente agradáveis no verão; ao meio do dia, o calor alentejano pode tornar os percursos menos confortáveis."
+  },
+  {
+    "id": 55,
+    "nome": "Restaurante Panela de Esteva",
+    "cidade": "Évora",
+    "categoria": "restaurante",
+    "descricao": "A ementa deste estabelecimento fictício inspira-se na cozinha alentejana, com migas, açorda, carne de porco e pratos sazonais de legumes. O ambiente é informal, com mesas para famílias e grupos de amigos que valorizam porções generosas. Conte com cerca de 12 a 22 euros por pessoa, sem bebidas especiais; durante os meses quentes, uma refeição ao início da noite pode ser mais confortável do que ao almoço."
+  },
+  {
+    "id": 56,
+    "nome": "Café Folha de Poejo",
+    "cidade": "Évora",
+    "categoria": "café",
+    "descricao": "Este café fictício serve café expresso, infusões de ervas, torradas e bolos de inspiração regional num espaço de decoração simples. Os bancos junto à janela são procurados por leitores e visitantes que precisam de descansar depois de caminhar pelas ruas de pedra. Um lanche deverá custar entre 3 e 7 euros, e a sala é geralmente mais sossegada a meio da manhã do que durante o período de almoço."
+  },
+  {
+    "id": 57,
+    "nome": "Praia de Faro",
+    "cidade": "Faro",
+    "categoria": "praia",
+    "descricao": "Localizada numa ilha-barreira da Ria Formosa, esta praia combina uma extensa faixa de areia com zonas de restauração e alojamento. As famílias encontram serviços de apoio, enquanto os praticantes de desportos aquáticos aproveitam as condições variáveis do vento. No verão, o acesso pode envolver filas de trânsito ou transporte por barco; para nadar em segurança, é essencial respeitar a sinalização e as indicações da vigilância balnear."
+  },
+  {
+    "id": 58,
+    "nome": "Museu Municipal de Faro",
+    "cidade": "Faro",
+    "categoria": "museu",
+    "descricao": "Instalado num antigo convento, o museu apresenta arqueologia, pintura e objetos que documentam a história da região algarvia. O claustro acrescenta um ambiente sereno à visita, enquanto as coleções permitem acompanhar diferentes períodos de ocupação humana. É uma opção interessante para quem procura atividades culturais fora da praia, com duração aproximada de uma hora; os horários e o preço de entrada devem ser confirmados antes da deslocação."
+  },
+  {
+    "id": 59,
+    "nome": "Igreja do Carmo",
+    "cidade": "Faro",
+    "categoria": "igreja",
+    "descricao": "A fachada barroca e a decoração interior revelam a riqueza artística de uma das igrejas históricas da cidade. Nos fundos encontra-se a conhecida Capela dos Ossos, cuja composição suscita curiosidade e reflexão sobre os costumes funerários de outros séculos. A visita é relativamente breve e adequada a adultos interessados em património religioso; durante cerimónias, o acesso a algumas zonas pode ser temporariamente limitado."
+  },
+  {
+    "id": 60,
+    "nome": "Parque Natural da Ria Formosa",
+    "cidade": "Faro",
+    "categoria": "parque",
+    "descricao": "Canais, sapais, ilhas e zonas de nidificação compõem este sistema lagunar de elevada importância ecológica. A observação de aves, os passeios de barco e as caminhadas interpretativas são atividades populares entre famílias e amantes da natureza. Algumas visitas guiadas têm custos próprios, e a experiência depende das marés e das condições meteorológicas; leve proteção solar e evite perturbar a fauna nas áreas sensíveis."
+  },
+  {
+    "id": 61,
+    "nome": "Restaurante Sal de Amendoeira",
+    "cidade": "Faro",
+    "categoria": "restaurante",
+    "descricao": "Este restaurante fictício apresenta uma ementa centrada no peixe grelhado, em saladas mediterrânicas e em pratos vegetarianos com leguminosas. O espaço é luminoso durante o dia e ganha um ambiente mais íntimo ao jantar, sendo adequado a casais e pequenos grupos. O preço estimado varia entre 15 e 26 euros por pessoa; para quem tem alergias alimentares, recomenda-se confirmar a composição dos molhos e acompanhamentos."
+  },
+  {
+    "id": 62,
+    "nome": "Mercado Municipal de Faro",
+    "cidade": "Faro",
+    "categoria": "mercado",
+    "descricao": "Bancas de peixe, fruta, legumes, pão e produtos regionais mostram a diversidade alimentar do Algarve. A manhã é o período mais movimentado, quando residentes fazem compras e visitantes procuram ingredientes locais para levar consigo. É possível encontrar opções económicas para um pequeno-almoço ou uma refeição ligeira, mas os horários das bancas variam; alguns comerciantes encerram mais cedo aos sábados e em períodos festivos."
+  },
+  {
+    "id": 63,
+    "nome": "Ponta da Piedade",
+    "cidade": "Lagos",
+    "categoria": "miradouro",
+    "descricao": "Falésias calcárias, arcos naturais e pequenas enseadas formam uma paisagem costeira observável a partir dos passadiços e escadarias. Fotógrafos, casais e caminhantes visitam a zona para apreciar as cores da rocha, sobretudo no início da manhã. O acesso aos miradouros superiores é geralmente simples, mas as escadas até ao nível da água são íngremes; o vento e a ondulação exigem prudência."
+  },
+  {
+    "id": 64,
+    "nome": "Praia do Camilo",
+    "cidade": "Lagos",
+    "categoria": "praia",
+    "descricao": "Esta pequena praia, enquadrada por falésias douradas, é acessível através de uma escadaria longa que desce até à areia. O espaço limitado atrai casais, fotógrafos e banhistas que chegam cedo para evitar a maior concentração de pessoas. Na maré alta, a área disponível diminui significativamente, e o acesso não é indicado para quem tem dificuldades em subir escadas; leve água e prepare-se para uma subida exigente."
+  },
+  {
+    "id": 65,
+    "nome": "Museu de Lagos — Núcleo Dr. José Formosinho",
+    "cidade": "Lagos",
+    "categoria": "museu",
+    "descricao": "Coleções arqueológicas, objetos religiosos, arte popular e elementos etnográficos ajudam a contar a história local desde a Antiguidade. A diversidade de peças permite alternar entre temas marítimos, tradições quotidianas e práticas de culto. O espaço é adequado a visitantes que procuram compreender a região para além das praias, com uma visita de cerca de uma hora; a disposição de algumas salas pode dificultar a circulação em períodos de maior afluência."
+  },
+  {
+    "id": 66,
+    "nome": "Fortaleza da Ponta da Bandeira",
+    "cidade": "Lagos",
+    "categoria": "monumento",
+    "descricao": "Esta fortificação costeira, construída no século XVII, fazia parte do sistema defensivo da cidade e protegeu a entrada do porto. As muralhas e a localização junto à água permitem observar a relação entre defesa militar e atividade marítima. A visita é curta e indicada para entusiastas de história, enquanto os passeios exteriores agradam a famílias; confirme o horário de abertura antes de planear a entrada no interior."
+  },
+  {
+    "id": 67,
+    "nome": "Restaurante Maré de Tomilho",
+    "cidade": "Lagos",
+    "categoria": "restaurante",
+    "descricao": "A cozinha deste restaurante fictício combina peixe fresco, cataplana, pratos vegetarianos e sobremesas preparadas com fruta da época. O ambiente é informal ao almoço e mais intimista à noite, atraindo casais e grupos de amigos. O custo médio previsto situa-se entre 18 e 30 euros por pessoa, dependendo da escolha do peixe; no verão, a procura aumenta e reservar mesa torna-se especialmente útil."
+  },
+  {
+    "id": 68,
+    "nome": "Bar Brisa de Âmbar",
+    "cidade": "Lagos",
+    "categoria": "bar",
+    "descricao": "Este bar fictício privilegia música acústica, iluminação quente e uma carta de vinhos portugueses, cervejas artesanais e cocktails simples. O ambiente é indicado para casais e pequenos grupos que querem conversar sem competir com música demasiado alta. As bebidas poderão custar entre 4 e 10 euros, e o espaço tende a encher depois do jantar; quem procura sossego deve preferir o início da noite."
+  },
+  {
+    "id": 69,
+    "nome": "Santuário de Santa Luzia",
+    "cidade": "Viana do Castelo",
+    "categoria": "monumento",
+    "descricao": "No alto do monte de Santa Luzia, o santuário combina referências românicas e bizantinas com uma posição privilegiada sobre a costa e o vale do Lima. A subida pode ser feita de carro, a pé ou através do funicular, conforme as condições de funcionamento. Visitantes interessados em arquitetura e fotografia encontram motivos para permanecer algum tempo, embora a neblina possa ocultar a paisagem em certos dias."
+  },
+  {
+    "id": 70,
+    "nome": "Museu do Traje de Viana do Castelo",
+    "cidade": "Viana do Castelo",
+    "categoria": "museu",
+    "descricao": "Trajes tradicionais, peças bordadas e objetos ligados às festas populares ilustram a evolução do vestuário e dos costumes minhotos. O ouro tradicional e os detalhes dos tecidos ajudam a compreender a identidade cultural da região. A visita interessa a famílias, estudantes e apreciadores de artesanato, demora cerca de uma hora e pode ser combinada com um passeio pelo centro histórico; confirme os horários em dias festivos."
+  },
+  {
+    "id": 71,
+    "nome": "Praia do Cabedelo",
+    "cidade": "Viana do Castelo",
+    "categoria": "praia",
+    "descricao": "A extensão de areia e a exposição ao vento tornam esta praia especialmente popular entre praticantes de kitesurf, windsurf e surf. Há escolas de desportos aquáticos e zonas onde famílias podem caminhar ou descansar longe das áreas de maior atividade. As condições do mar mudam rapidamente, pelo que iniciantes devem recorrer a instrutores; no verão, os serviços de apoio facilitam a permanência durante várias horas."
+  },
+  {
+    "id": 72,
+    "nome": "Parque Ecológico Urbano",
+    "cidade": "Viana do Castelo",
+    "categoria": "parque",
+    "descricao": "Áreas húmidas, vegetação autóctone e caminhos pedonais criam um espaço propício à observação de aves e a passeios tranquilos. Famílias, fotógrafos de natureza e pessoas que procuram atividade física ligeira podem explorar o recinto sem necessidade de equipamento especial. O acesso exterior é geralmente gratuito, mas algumas zonas podem ficar temporariamente encerradas para proteção ambiental; binóculos e calçado confortável ajudam a aproveitar melhor a visita."
+  },
+  {
+    "id": 73,
+    "nome": "Restaurante Ramo de Loureiro",
+    "cidade": "Viana do Castelo",
+    "categoria": "restaurante",
+    "descricao": "A ementa deste estabelecimento fictício inspira-se na cozinha minhota, com bacalhau, arroz de sarrabulho e alternativas vegetarianas preparadas com legumes da época. A sala combina mesas familiares com um pequeno espaço mais reservado para casais. O preço médio deverá situar-se entre 14 e 24 euros por pessoa; o serviço pode demorar mais aos domingos, quando grupos familiares ocupam grande parte das mesas."
+  },
+  {
+    "id": 74,
+    "nome": "Café Casca de Limão",
+    "cidade": "Viana do Castelo",
+    "categoria": "café",
+    "descricao": "Sumos naturais, cafés curtos, sandes e fatias de bolo compõem a oferta deste café fictício de ambiente descontraído. As mesas junto à janela são procuradas por quem lê, trabalha com um computador ou espera por amigos antes de passear. O custo de uma pausa simples deverá rondar os 4 a 8 euros, e a afluência aumenta durante a manhã e ao fim da tarde, sobretudo em dias de bom tempo."
+  },
+  {
+    "id": 75,
+    "nome": "Museu do Brinquedo Português",
+    "cidade": "Sintra",
+    "categoria": "museu",
+    "descricao": "Uma coleção de brinquedos produzidos em Portugal reúne comboios, bonecas, automóveis em miniatura e jogos de diferentes décadas. Os adultos reconhecem frequentemente objetos da sua infância, enquanto as crianças descobrem como o lazer doméstico mudou ao longo do tempo. O ambiente é familiar e a visita pode durar cerca de uma hora; alguns expositores estão a uma altura menos confortável para crianças pequenas."
+  },
+  {
+    "id": 76,
+    "nome": "Atividade de Passeio de Barco pela Ria Formosa",
+    "cidade": "Faro",
+    "categoria": "atividade",
+    "descricao": "Um passeio guiado de barco permite explorar canais, bancos de areia e ilhas da Ria Formosa, observando aves e aprendendo sobre o ecossistema lagunar. A experiência é indicada para casais, famílias com crianças maiores e amantes da natureza, com saídas que podem durar entre uma e três horas. Os preços variam conforme o percurso e a época, e a atividade depende das marés, do vento e das condições de segurança."
+  },
+  {
+    "id": 77,
+    "nome": "Atividade de Prova de Vinhos do Douro",
+    "cidade": "Porto",
+    "categoria": "atividade",
+    "descricao": "Uma sessão orientada de degustação permite comparar vinhos do Douro e do Porto, aprendendo a reconhecer aromas, níveis de doçura e diferenças de envelhecimento. A experiência é adequada a adultos interessados em gastronomia, incluindo principiantes que nunca participaram numa prova formal. O custo estimado varia entre 20 e 45 euros por pessoa, e as sessões costumam exigir reserva antecipada; existem alternativas sem álcool mediante pedido."
+  },
+  {
+    "id": 78,
+    "nome": "Atividade de Observação de Golfinhos",
+    "cidade": "Lagos",
+    "categoria": "atividade",
+    "descricao": "A saída de barco ao largo da costa algarvia oferece a possibilidade de observar golfinhos no seu habitat natural, acompanhada por uma equipa experiente. É uma opção popular entre famílias com crianças e visitantes interessados em vida marinha, embora os avistamentos nunca sejam garantidos. As excursões costumam durar entre duas e três horas, têm preços variáveis e podem ser canceladas devido à ondulação ou ao vento forte."
+  },
+  {
+    "id": 79,
+    "nome": "Atividade de Percurso de Caiaque nas Grutas",
+    "cidade": "Lagos",
+    "categoria": "atividade",
+    "descricao": "Com acompanhamento de um guia, os participantes percorrem a costa em caiaque para observar pequenas grutas, arcos rochosos e enseadas acessíveis sobretudo pelo mar. A experiência exige alguma mobilidade e é mais adequada a adolescentes e adultos confortáveis na água, embora existam saídas adaptadas a principiantes. O preço aproximado varia entre 30 e 50 euros, e a realização depende do estado do mar e das regras locais de segurança."
+  },
+  {
+    "id": 80,
+    "nome": "Atividade de Visita Guiada à Universidade de Coimbra",
+    "cidade": "Coimbra",
+    "categoria": "atividade",
+    "descricao": "Um percurso guiado pelo núcleo histórico universitário apresenta tradições académicas, pátios, edifícios antigos e episódios ligados à vida estudantil. A visita é indicada para estudantes, famílias e viajantes interessados na história do ensino superior português. A duração habitual ronda os noventa minutos, com preços dependentes do circuito escolhido; algumas salas têm capacidade limitada, pelo que a reserva antecipada é aconselhável durante as férias e épocas de exames."
+  }
+]

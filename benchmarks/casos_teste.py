@@ -1,3 +1,6 @@
+import json
+from pathlib import Path
+
 # Casos de teste para avaliar a pesquisa semântica.
 # Cada caso: (pesquisa, ids dos POIs considerados resposta certa).
 # NOTA: casos para os POIs de exemplo (data/sample/pois_exemplo.json).
@@ -30,3 +33,9 @@ def posicao_esperada(resultados: list[dict], ids_esperados: set[int]) -> int | N
         if r["id"] in ids_esperados:
             return posicao
     return None
+
+def carregar_testes(path: Path) -> list[tuple[str, set[int]]]:
+    """Lê casos de teste de um ficheiro JSON com os campos 'pesquisa' e 'ids_corretos'."""
+    with open(path, encoding="utf-8") as f:
+        dados = json.load(f)
+    return [(d["pesquisa"], set(d["ids_corretos"])) for d in dados]
