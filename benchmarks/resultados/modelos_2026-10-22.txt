@@ -1,0 +1,36 @@
+Pesquisas em que os modelos dão posições diferentes:
+Pesquisa                                              MiniLM     MPNet  E5-small
+--------------------------------------------------------------------------------
+Edifícios históricos com interiores luxuosos no            1         1         3
+Igrejas antigas com decoração artística no Porto           2         3         1
+Onde passear ao ar livre no Porto                         10         1         1
+Praias para aprender surf no Porto                         3         4         1
+Praias para praticar bodyboard em Aveiro                   2         1         1
+O que fazer com crianças num dia chuvoso                   8        14         3
+Um sítio sossegado para ler e descansar                    1         1         2
+Atividade divertida para uma família curiosa               1         2         2
+Onde provar especialidades locais sem gastar mui           5         8         5
+Lugar para fugir ao calor durante a tarde                 12        19        13
+Onde observar animais selvagens no Algarve                 1         3         1
+Um plano para quem gosta de histórias antigas              6        11         9
+Sítio para fazer um piquenique em família                 16         2         1
+Onde descansar depois de caminhar muito                    9         8        12
+Atividade ao ar livre para adolescentes aventure           1         3         1
+Um lugar para descobrir costumes portugueses               1         2         1
+Uma experiência cultural para fazer durante féri           4        18         6
+Best places to learn about Portuguese ceramics             1         1         2
+A fun indoor activity for a rainy afternoon               12        22         4
+Where can I try regional Portuguese food?                  2         1         1
+Espaços para conhecer a história de Portugal               1         2         1
+Monumentos com escadarias e vistas panorâmicas             1         1         2
+Experiências marítimas para descobrir a costa al           1         2         1
+Edifícios históricos ligados à vida universitári           1         3         1
+Praias portuguesas ideais para desportos com ven           1         1         2
+
+Métrica                             MiniLM     MPNet  E5-small
+--------------------------------------------------------------
+Dimensão dos vetores                   384       768       384
+Local certo em 1.º lugar             37/50     33/50     37/50
+Local certo no top 5                 43/50     43/50     46/50
+Posição média do local certo          2.56      3.18      2.04
+Tempo médio por pesquisa (ms)         27.3      72.8      26.6
