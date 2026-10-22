@@ -34,7 +34,7 @@ def build_text(poi: dict, modo: str = "descricao") -> str:
 def index_pois(
     pois: list[dict],
     collection_name: str = VECTOR_COLLECTION,
-    modo_texto: str = "descricao",
+    modo_texto: str = "enriquecido",
     recreate: bool = False,
 ) -> int:
     """Gera os embeddings dos POIs e guarda-os no Qdrant."""

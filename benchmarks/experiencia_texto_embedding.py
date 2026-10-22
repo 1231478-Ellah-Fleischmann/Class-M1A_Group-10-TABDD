@@ -1,10 +1,9 @@
-from app.repositories.vector.qdrant_repository import VECTOR_COLLECTION
 from app.services.poi_indexing import SAMPLE_FILE, index_pois, load_pois
 from app.services.semantic_search import semantic_search
 
 COLECOES = {
-    "descricao": VECTOR_COLLECTION,
-    "enriquecido": "pois_enriquecido",
+    "descricao": "exp_pois_descricao",
+    "enriquecido": "exp_pois_enriquecido",
 }
 
 # (pesquisa, ids considerados resposta certa)
