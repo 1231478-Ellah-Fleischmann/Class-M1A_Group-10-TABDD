@@ -26,6 +26,10 @@ def embed_text(text: str) -> list[float]:
     """Transforma um único texto num vetor."""
     return embed_texts([text])[0]
 
+@lru_cache(maxsize=1)
+def get_dimension() -> int:
+    """Devolve o número de dimensões dos vetores gerados pelo modelo."""
+    return len(embed_text("teste"))
 
 if __name__ == "__main__":
     frases = [

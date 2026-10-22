@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams
+from qdrant_client.models import Distance, PointStruct, VectorParams
 
 load_dotenv()
 
@@ -11,17 +11,16 @@ VECTOR_PORT = int(os.getenv("VECTOR_PORT", "6333"))
 VECTOR_API_KEY = os.getenv("VECTOR_API_KEY") or None
 VECTOR_COLLECTION = os.getenv("VECTOR_COLLECTION", "pois")
 
-# Dimensão dos vetores do modelo paraphrase-multilingual-MiniLM-L12-v2
-VECTOR_SIZE = 384
 
 def get_client() -> QdrantClient:
     """Cria e devolve uma ligação ao Qdrant."""
     return QdrantClient(host=VECTOR_HOST, port=VECTOR_PORT, api_key=VECTOR_API_KEY)
 
+
 def create_collection(
     client: QdrantClient,
+    vector_size: int,
     collection_name: str = VECTOR_COLLECTION,
-    vector_size: int = VECTOR_SIZE,
     recreate: bool = False,
 ) -> None:
     """Cria a coleção no Qdrant, se ainda não existir."""
@@ -36,15 +35,42 @@ def create_collection(
         collection_name=collection_name,
         vectors_config=VectorParams(size=vector_size, distance=Distance.COSINE),
     )
-    print(f"Coleção '{collection_name}' criada.")
-    
+    print(f"Coleção '{collection_name}' criada com vetores de {vector_size} dimensões.")
+
+
+def upsert_pois(
+    client: QdrantClient,
+    pois: list[dict],
+    vectors: list[list[float]],
+    collection_name: str = VECTOR_COLLECTION,
+) -> int:
+    """Insere (ou atualiza) POIs na coleção. Devolve quantos pontos foram enviados."""
+    if len(pois) != len(vectors):
+        raise ValueError("O número de POIs e de vetores tem de ser igual.")
+
+    points = [
+        PointStruct(
+            id=poi["id"],
+            vector=vector,
+            payload={
+                "nome": poi["nome"],
+                "cidade": poi["cidade"],
+                "categoria": poi["categoria"],
+            },
+        )
+        for poi, vector in zip(pois, vectors)
+    ]
+
+    client.upsert(collection_name=collection_name, points=points)
+    return len(points)
+
+
+def count_points(client: QdrantClient, collection_name: str = VECTOR_COLLECTION) -> int:
+    """Devolve quantos pontos existem na coleção."""
+    return client.count(collection_name=collection_name, exact=True).count
+
+
 if __name__ == "__main__":
     client = get_client()
     print("Ligação ao Qdrant OK")
-
-    create_collection(client)
-
-    info = client.get_collection(VECTOR_COLLECTION)
-    print("Dimensão dos vetores:", info.config.params.vectors.size)
-    print("Métrica:", info.config.params.vectors.distance)
-    print("Número de pontos:", info.points_count)
+    print("Coleções existentes:", client.get_collections())
