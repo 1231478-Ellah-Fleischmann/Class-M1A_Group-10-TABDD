@@ -1,6 +1,10 @@
 -- Smart Tourism Platform - esquema MySQL 8.0 (RASCUNHO para discussão)
 -- Executar com o utilizador do projeto, na base smart_tourism.
 -- Nota: em MySQL 8, para SRID 4326 a ordem das coordenadas em POINT é (latitude, longitude).
+-- Falta decidir/acrescentar
+--   1. Onde fica a descrição textual dos POIs (proposta: MongoDB). É a base dos embeddings do Qdrant.
+--   2. Onde ficam as preferências do utilizador (proposta: MongoDB para mais flexibilidade).
+--   3. Onde fica o histórico de atividade (proposta: MongoDB).
 
 USE smart_tourism;
 
@@ -33,6 +37,9 @@ CREATE TABLE categoria (
 ) ENGINE=InnoDB;
 
 -- poi.id e o identificador canonico, reutilizado no NoSQL e no Qdrant.
+-- NOTA: BIGINT UNSIGNED é compatível com os ids do Qdrant (inteiros de 64 bits sem sinal).
+-- NOTA: o ON DELETE CASCADE só limpa o MySQL. Ao apagar um POI, a aplicação tem de apagar 
+-- também o documento no MongoDB e o vetor no Qdrant (consistência gerida pela aplicação).
 CREATE TABLE poi (
   id            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   destino_id    INT UNSIGNED      NOT NULL,
@@ -58,6 +65,9 @@ CREATE TABLE favorito (
   CONSTRAINT fk_favorito_poi        FOREIGN KEY (poi_id)        REFERENCES poi (id)        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- NOTA: o rating médio de cada POI é calculado com AVG(valor), apoiado pelo ix_rating_poi.
+--       Se for uma consulta muito frequente, pode discutir-se guardar a média numa coluna
+--       de poi, atualizada a cada novo rating (padrão Computed). Possível cenário para a Parte II.
 CREATE TABLE rating (
   id             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   utilizador_id  BIGINT UNSIGNED NOT NULL,
