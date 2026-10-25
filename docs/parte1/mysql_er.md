@@ -2,42 +2,54 @@
 
 ```mermaid
 erDiagram
-  DESTINO   ||--o{ POI        : contem
-  CATEGORIA ||--o{ POI        : classifica
+  DESTINO    ||--o{ POI       : contem
+  CATEGORIA  ||--o{ POI       : classifica
   UTILIZADOR ||--o{ FAVORITO  : guarda
   POI        ||--o{ FAVORITO  : e_guardado
   UTILIZADOR ||--o{ RATING    : avalia
   POI        ||--o{ RATING    : e_avaliado
 
-  UTILIZADOR { bigint id PK
+  UTILIZADOR {
+    bigint id PK
     varchar nome
     varchar email UK
     varchar pais_origem
-    datetime data_registo }
-  DESTINO { int id PK
+    datetime data_registo
+  }
+  DESTINO {
+    int id PK
     varchar nome
     varchar pais
     varchar regiao
-    point localizacao }
-  CATEGORIA { smallint id PK
-    varchar nome UK }
-  POI { bigint id PK
+    point localizacao
+  }
+  CATEGORIA {
+    smallint id PK
+    varchar nome UK
+  }
+  POI {
+    bigint id PK
     int destino_id FK
     smallint categoria_id FK
     varchar nome
     varchar morada
     point localizacao
-    decimal preco_medio }
-  FAVORITO { bigint utilizador_id PK
-    bigint poi_id PK
-    datetime data_adicionado }
-  RATING { bigint id PK
+    decimal preco_medio
+  }
+  FAVORITO {
+    bigint utilizador_id PK, FK
+    bigint poi_id PK, FK
+    datetime data_adicionado
+  }
+  RATING {
+    bigint id PK
     bigint utilizador_id FK
     bigint poi_id FK
     tinyint valor
-    datetime data }
+    datetime data
+  }
 ```
-> **Nota:** confirmar que o diagrama aparece desenhado na pré-visualização do GitHub. Se não aparecer, pôr uma quebra de linha a seguir a cada `{`. Nas tabelas `FAVORITO` e `RATING`, marcar as colunas que são chave estrangeira com `FK` (ex.: `bigint utilizador_id PK, FK`).
+
 ## Pontos a discutir com o grupo
 - `poi.id` e o identificador canonico usado no MongoDB e no Qdrant.
 - O rating individual fica so no MySQL (fonte de verdade); o MongoDB guarda o texto das reviews e referencia `poi_id` e `utilizador_id`.
