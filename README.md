@@ -11,7 +11,7 @@ Plataforma de turismo em Python que integra três paradigmas de persistência: r
 |---|---|---|
 | Relacional | MySQL Server | Decidido |
 | NoSQL | MongoDB | Decidido |
-| Vetorial | A definir | Por decidir |
+| Vetorial | QDrant | Decidido |
 | Aplicação | Python | Decidido |
 | Frontend | A definir (prova de conceito) | Por decidir |
 
