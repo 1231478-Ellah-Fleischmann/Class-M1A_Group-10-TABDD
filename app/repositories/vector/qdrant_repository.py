@@ -7,6 +7,7 @@ from qdrant_client.models import (
     FieldCondition,
     Filter,
     HasIdCondition,
+    MatchAny,
     MatchValue,
     PayloadSchemaType,
     PointStruct,
@@ -98,15 +99,20 @@ def _filtro_payload(
     cidade: str | None = None,
     categoria: str | None = None,
     excluir_ids: set[int] | None = None,
+    excluir_cidade: str | None = None,
 ) -> Filter | None:
-    """Constrói o filtro do Qdrant: condições obrigatórias (must) e ids a excluir (must_not)."""
+    """Constrói o filtro do Qdrant: condições obrigatórias (must) e condições proibidas (must_not)."""
     must = []
     if cidade:
         must.append(FieldCondition(key="cidade", match=MatchValue(value=cidade)))
     if categoria:
         must.append(FieldCondition(key="categoria", match=MatchValue(value=categoria)))
 
-    must_not = [HasIdCondition(has_id=list(excluir_ids))] if excluir_ids else []
+    must_not = []
+    if excluir_ids:
+        must_not.append(HasIdCondition(has_id=list(excluir_ids)))
+    if excluir_cidade:
+        must_not.append(FieldCondition(key="cidade", match=MatchValue(value=excluir_cidade)))
 
     if not must and not must_not:
         return None
@@ -152,6 +158,7 @@ def recommend_pois(
     limit: int = 5,
     cidade: str | None = None,
     categoria: str | None = None,
+    excluir_cidade: str | None = None,
     estrategia: RecommendStrategy = RecommendStrategy.AVERAGE_VECTOR,
     collection_name: str = VECTOR_COLLECTION,
 ) -> list[dict]:
@@ -172,12 +179,25 @@ def recommend_pois(
                 strategy=estrategia,
             )
         ),
-        query_filter=_filtro_payload(cidade, categoria, excluir_ids),
+        query_filter=_filtro_payload(cidade, categoria, excluir_ids, excluir_cidade),
         limit=limit,
         with_payload=True,
     )
     return [{"id": p.id, "score": p.score, **p.payload} for p in resultado.points]
 
+def find_ids_by_name(
+    client: QdrantClient,
+    nomes: list[str],
+    collection_name: str = VECTOR_COLLECTION,
+) -> dict[str, int]:
+    """Devolve {nome: id} dos POIs com esses nomes (útil para testes)."""
+    pontos, _ = client.scroll(
+        collection_name=collection_name,
+        scroll_filter=Filter(must=[FieldCondition(key="nome", match=MatchAny(any=nomes))]),
+        limit=len(nomes),
+        with_payload=True,
+    )
+    return {p.payload["nome"]: p.id for p in pontos}
 
 if __name__ == "__main__":
     client = get_client()
