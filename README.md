@@ -43,9 +43,16 @@ benchmarks/       Cenários de análise de índices
 
 1. Copiar `.env.example` para `.env` e preencher as credenciais (o `.env` nunca vai para o repositório).
 2. Instalar dependências: `pip install -r requirements.txt`
-3. Criar o esquema MySQL: ver `sql/`
-4. Carregar os dados: ver `data/`
-5. Arrancar a aplicação: a definir
+3. Arrancar o Qdrant (Docker). Da primeira vez:
+   ```
+   docker run -d --name qdrant -p 6333:6333 -v qdrant_storage:/qdrant/storage qdrant/qdrant:v1.20.0
+   ```
+   Das vezes seguintes basta `docker start qdrant`.
+4. Criar o esquema MySQL: ver `sql/`
+5. Carregar os dados: ver `data/`
+6. Indexar os POIs no Qdrant: `python -m app.services.poi_indexing --recriar`
+   (com `--maior` usa o dataset de teste de 80 POIs)
+7. Arrancar a aplicação: a definir
 
 ## Fluxo de trabalho
 
