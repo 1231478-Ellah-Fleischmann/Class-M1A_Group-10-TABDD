@@ -4,7 +4,7 @@ Smart Tourism Platform · Tópicos Avançados de Bases de Dados
 
 ## 1. Objetivo do MongoDB
 
-No projeto Smart Tourism Platform, fico responsável pela componente NoSQL, utilizando MongoDB.
+No projeto Smart Tourism Platform, fico responsável pela componente NoSQL, rutilizando MongoDB.
 
 O MongoDB porque permite guardar dados em documentos com uma estrutura flexível. Neste projeto, será utilizado principalmente para armazenar informação dos utilizadores: as suas preferências, os destinos favoritos e o histórico de atividade na plataforma.
 
