@@ -1,0 +1,401 @@
+[
+  {
+    "pesquisa": "Museus de arte para visitar no Porto",
+    "ids_corretos": [
+      1
+    ]
+  },
+  {
+    "pesquisa": "Onde conhecer a história dos transportes no Porto",
+    "ids_corretos": [
+      2
+    ]
+  },
+  {
+    "pesquisa": "Espaços de ciência para explorar no Porto",
+    "ids_corretos": [
+      3
+    ]
+  },
+  {
+    "pesquisa": "Edifícios históricos com interiores luxuosos no Porto",
+    "ids_corretos": [
+      4
+    ]
+  },
+  {
+    "pesquisa": "Igrejas antigas com decoração artística no Porto",
+    "ids_corretos": [
+      5
+    ]
+  },
+  {
+    "pesquisa": "Onde passear ao ar livre no Porto",
+    "ids_corretos": [
+      6
+    ]
+  },
+  {
+    "pesquisa": "Praias para aprender surf no Porto",
+    "ids_corretos": [
+      7
+    ]
+  },
+  {
+    "pesquisa": "Museus de teatro de marionetas em Lisboa",
+    "ids_corretos": [
+      12
+    ]
+  },
+  {
+    "pesquisa": "Monumentos manuelinos para visitar em Lisboa",
+    "ids_corretos": [
+      14,
+      15
+    ]
+  },
+  {
+    "pesquisa": "Miradouros para fotografar Lisboa ao entardecer",
+    "ids_corretos": [
+      18
+    ]
+  },
+  {
+    "pesquisa": "Museus de arqueologia romana em Braga",
+    "ids_corretos": [
+      22
+    ]
+  },
+  {
+    "pesquisa": "Jardins botânicos para passear em Coimbra",
+    "ids_corretos": [
+      32
+    ]
+  },
+  {
+    "pesquisa": "Praias para praticar bodyboard em Aveiro",
+    "ids_corretos": [
+      34
+    ]
+  },
+  {
+    "pesquisa": "Trilhos naturais para caminhar em Guimarães",
+    "ids_corretos": [
+      42
+    ]
+  },
+  {
+    "pesquisa": "Museus de aviação para visitar em Sintra",
+    "ids_corretos": [
+      46
+    ]
+  },
+  {
+    "pesquisa": "O que fazer com crianças num dia chuvoso",
+    "ids_corretos": [
+      2,
+      3,
+      12,
+      29,
+      46,
+      75
+    ]
+  },
+  {
+    "pesquisa": "Um sítio sossegado para ler e descansar",
+    "ids_corretos": [
+      25,
+      32,
+      54,
+      56
+    ]
+  },
+  {
+    "pesquisa": "Atividade divertida para uma família curiosa",
+    "ids_corretos": [
+      3,
+      29,
+      46,
+      75
+    ]
+  },
+  {
+    "pesquisa": "Onde provar especialidades locais sem gastar muito",
+    "ids_corretos": [
+      10,
+      27,
+      38,
+      56,
+      62
+    ]
+  },
+  {
+    "pesquisa": "Um passeio romântico com vistas bonitas",
+    "ids_corretos": [
+      18,
+      47,
+      49,
+      63
+    ]
+  },
+  {
+    "pesquisa": "Lugar para fugir ao calor durante a tarde",
+    "ids_corretos": [
+      1,
+      3,
+      9,
+      13,
+      21,
+      28
+    ]
+  },
+  {
+    "pesquisa": "Experiência diferente para adultos curiosos por vinhos",
+    "ids_corretos": [
+      77
+    ]
+  },
+  {
+    "pesquisa": "Onde observar animais selvagens no Algarve",
+    "ids_corretos": [
+      60,
+      76,
+      78
+    ]
+  },
+  {
+    "pesquisa": "Um plano para quem gosta de histórias antigas",
+    "ids_corretos": [
+      22,
+      28,
+      31,
+      39,
+      51
+    ]
+  },
+  {
+    "pesquisa": "Sítio para fazer um piquenique em família",
+    "ids_corretos": [
+      6,
+      25,
+      32,
+      42,
+      54
+    ]
+  },
+  {
+    "pesquisa": "Onde descansar depois de caminhar muito",
+    "ids_corretos": [
+      9,
+      27,
+      38,
+      44,
+      56,
+      74
+    ]
+  },
+  {
+    "pesquisa": "Atividade ao ar livre para adolescentes aventureiros",
+    "ids_corretos": [
+      42,
+      71,
+      79
+    ]
+  },
+  {
+    "pesquisa": "Um lugar para descobrir costumes portugueses",
+    "ids_corretos": [
+      10,
+      21,
+      35,
+      70
+    ]
+  },
+  {
+    "pesquisa": "Onde levar alguém que adora fotografia",
+    "ids_corretos": [
+      18,
+      47,
+      49,
+      63,
+      64
+    ]
+  },
+  {
+    "pesquisa": "Uma experiência cultural para fazer durante férias",
+    "ids_corretos": [
+      4,
+      13,
+      30,
+      80
+    ]
+  },
+  {
+    "pesquisa": "Where can I see historic aircraft in Portugal?",
+    "ids_corretos": [
+      46
+    ]
+  },
+  {
+    "pesquisa": "A peaceful green space for a morning walk",
+    "ids_corretos": [
+      6,
+      25,
+      32,
+      54,
+      72
+    ]
+  },
+  {
+    "pesquisa": "Best places to learn about Portuguese ceramics",
+    "ids_corretos": [
+      11,
+      35
+    ]
+  },
+  {
+    "pesquisa": "Where can kids discover how science works?",
+    "ids_corretos": [
+      3,
+      29
+    ]
+  },
+  {
+    "pesquisa": "Beautiful coastal views for sunset photography",
+    "ids_corretos": [
+      48,
+      49,
+      63
+    ]
+  },
+  {
+    "pesquisa": "A fun indoor activity for a rainy afternoon",
+    "ids_corretos": [
+      2,
+      3,
+      12,
+      29,
+      46,
+      75
+    ]
+  },
+  {
+    "pesquisa": "Where to see traditional Portuguese clothing",
+    "ids_corretos": [
+      70
+    ]
+  },
+  {
+    "pesquisa": "A memorable boat trip to spot marine wildlife",
+    "ids_corretos": [
+      76,
+      78
+    ]
+  },
+  {
+    "pesquisa": "Historic religious buildings with impressive interiors",
+    "ids_corretos": [
+      5,
+      16,
+      23,
+      53,
+      59
+    ]
+  },
+  {
+    "pesquisa": "Where can I try regional Portuguese food?",
+    "ids_corretos": [
+      8,
+      19,
+      26,
+      33,
+      43,
+      55
+    ]
+  },
+  {
+    "pesquisa": "Espaços para conhecer a história de Portugal",
+    "ids_corretos": [
+      13,
+      21,
+      22,
+      28,
+      39,
+      51
+    ]
+  },
+  {
+    "pesquisa": "Locais para aprender sobre ciência e tecnologia",
+    "ids_corretos": [
+      2,
+      3,
+      29,
+      46
+    ]
+  },
+  {
+    "pesquisa": "Passeios costeiros com grutas e formações rochosas",
+    "ids_corretos": [
+      48,
+      63,
+      79
+    ]
+  },
+  {
+    "pesquisa": "Onde ver vestígios da presença romana",
+    "ids_corretos": [
+      22,
+      28,
+      51
+    ]
+  },
+  {
+    "pesquisa": "Sítios para provar doces e tomar café",
+    "ids_corretos": [
+      9,
+      27,
+      38,
+      44,
+      56,
+      74
+    ]
+  },
+  {
+    "pesquisa": "Monumentos com escadarias e vistas panorâmicas",
+    "ids_corretos": [
+      24,
+      39,
+      47,
+      69
+    ]
+  },
+  {
+    "pesquisa": "Experiências marítimas para descobrir a costa algarvia",
+    "ids_corretos": [
+      78,
+      79
+    ]
+  },
+  {
+    "pesquisa": "Lugares tranquilos para observar aves e plantas",
+    "ids_corretos": [
+      32,
+      60,
+      72
+    ]
+  },
+  {
+    "pesquisa": "Edifícios históricos ligados à vida universitária",
+    "ids_corretos": [
+      30,
+      80
+    ]
+  },
+  {
+    "pesquisa": "Praias portuguesas ideais para desportos com vento",
+    "ids_corretos": [
+      34,
+      71
+    ]
+  }
+]
