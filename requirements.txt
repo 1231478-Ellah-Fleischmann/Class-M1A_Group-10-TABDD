@@ -1,4 +1,4 @@
-# Dependências comuns (acrescentar as da BD vetorial quando for escolhida)
+# Dependências comuns
 python-dotenv
 mysql-connector-python
 pymongo
@@ -6,4 +6,4 @@ sentence-transformers
 pandas
 
 # Base de dados vetorial
-qdrant-client
+qdrant-client>=1.10
