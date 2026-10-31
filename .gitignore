@@ -23,3 +23,6 @@ data/processed/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Relatório gerado (Word)
+docs/relatorio/_build/
