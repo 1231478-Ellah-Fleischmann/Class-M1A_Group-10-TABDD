@@ -6,8 +6,13 @@ from qdrant_client.models import (
     Distance,
     FieldCondition,
     Filter,
+    HasIdCondition,
     MatchValue,
+    PayloadSchemaType,
     PointStruct,
+    RecommendInput,
+    RecommendQuery,
+    RecommendStrategy,
     VectorParams,
 )
 
@@ -17,6 +22,9 @@ VECTOR_HOST = os.getenv("VECTOR_HOST", "localhost")
 VECTOR_PORT = int(os.getenv("VECTOR_PORT", "6333"))
 VECTOR_API_KEY = os.getenv("VECTOR_API_KEY") or None
 VECTOR_COLLECTION = os.getenv("VECTOR_COLLECTION", "pois")
+
+# Campos do payload usados em filtros: cada um tem um índice no Qdrant
+CAMPOS_FILTRAVEIS = ["cidade", "categoria"]
 
 
 def get_client() -> QdrantClient:
@@ -30,7 +38,7 @@ def create_collection(
     collection_name: str = VECTOR_COLLECTION,
     recreate: bool = False,
 ) -> None:
-    """Cria a coleção no Qdrant, se ainda não existir."""
+    """Cria a coleção no Qdrant (e os índices do payload), se ainda não existir."""
     if client.collection_exists(collection_name):
         if not recreate:
             print(f"A coleção '{collection_name}' já existe. Nada a fazer.")
@@ -42,7 +50,16 @@ def create_collection(
         collection_name=collection_name,
         vectors_config=VectorParams(size=vector_size, distance=Distance.COSINE),
     )
-    print(f"Coleção '{collection_name}' criada com vetores de {vector_size} dimensões.")
+    for campo in CAMPOS_FILTRAVEIS:
+        client.create_payload_index(
+            collection_name=collection_name,
+            field_name=campo,
+            field_schema=PayloadSchemaType.KEYWORD,
+        )
+    print(
+        f"Coleção '{collection_name}' criada com vetores de {vector_size} dimensões "
+        f"e índices em {CAMPOS_FILTRAVEIS}."
+    )
 
 
 def upsert_pois(
@@ -76,6 +93,26 @@ def count_points(client: QdrantClient, collection_name: str = VECTOR_COLLECTION)
     """Devolve quantos pontos existem na coleção."""
     return client.count(collection_name=collection_name, exact=True).count
 
+
+def _filtro_payload(
+    cidade: str | None = None,
+    categoria: str | None = None,
+    excluir_ids: set[int] | None = None,
+) -> Filter | None:
+    """Constrói o filtro do Qdrant: condições obrigatórias (must) e ids a excluir (must_not)."""
+    must = []
+    if cidade:
+        must.append(FieldCondition(key="cidade", match=MatchValue(value=cidade)))
+    if categoria:
+        must.append(FieldCondition(key="categoria", match=MatchValue(value=categoria)))
+
+    must_not = [HasIdCondition(has_id=list(excluir_ids))] if excluir_ids else []
+
+    if not must and not must_not:
+        return None
+    return Filter(must=must or None, must_not=must_not or None)
+
+
 def search_pois(
     client: QdrantClient,
     query_vector: list[float],
@@ -85,22 +122,60 @@ def search_pois(
     collection_name: str = VECTOR_COLLECTION,
 ) -> list[dict]:
     """Devolve os POIs mais semelhantes ao vetor da pesquisa, do mais para o menos semelhante."""
-    condicoes = []
-    if cidade:
-        condicoes.append(FieldCondition(key="cidade", match=MatchValue(value=cidade)))
-    if categoria:
-        condicoes.append(FieldCondition(key="categoria", match=MatchValue(value=categoria)))
-
-    filtro = Filter(must=condicoes) if condicoes else None
-
     resultado = client.query_points(
         collection_name=collection_name,
         query=query_vector,
-        query_filter=filtro,
+        query_filter=_filtro_payload(cidade, categoria),
         limit=limit,
         with_payload=True,
     )
+    return [{"id": p.id, "score": p.score, **p.payload} for p in resultado.points]
 
+
+def get_poi(
+    client: QdrantClient,
+    poi_id: int,
+    collection_name: str = VECTOR_COLLECTION,
+) -> dict | None:
+    """Devolve o id e o payload de um POI, ou None se não existir."""
+    pontos = client.retrieve(collection_name=collection_name, ids=[poi_id], with_payload=True)
+    if not pontos:
+        return None
+    return {"id": pontos[0].id, **pontos[0].payload}
+
+
+def recommend_pois(
+    client: QdrantClient,
+    positivos: list[int],
+    negativos: list[int] | None = None,
+    excluir: list[int] | None = None,
+    limit: int = 5,
+    cidade: str | None = None,
+    categoria: str | None = None,
+    estrategia: RecommendStrategy = RecommendStrategy.AVERAGE_VECTOR,
+    collection_name: str = VECTOR_COLLECTION,
+) -> list[dict]:
+    """
+    Recomenda POIs parecidos com os 'positivos' e diferentes dos 'negativos',
+    usando os vetores já guardados no Qdrant.
+    Os positivos, os negativos e os ids em 'excluir' nunca aparecem nos resultados.
+    """
+    negativos = negativos or []
+    excluir_ids = set(positivos) | set(negativos) | set(excluir or [])
+
+    resultado = client.query_points(
+        collection_name=collection_name,
+        query=RecommendQuery(
+            recommend=RecommendInput(
+                positive=positivos,
+                negative=negativos or None,
+                strategy=estrategia,
+            )
+        ),
+        query_filter=_filtro_payload(cidade, categoria, excluir_ids),
+        limit=limit,
+        with_payload=True,
+    )
     return [{"id": p.id, "score": p.score, **p.payload} for p in resultado.points]
 
 

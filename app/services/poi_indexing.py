@@ -57,8 +57,9 @@ if __name__ == "__main__":
 
     recriar = "--recriar" in sys.argv
 
-    pois = load_pois(SAMPLE_FILE)
-    print(f"{len(pois)} POIs lidos de {SAMPLE_FILE}")
+    ficheiro = Path("data/sample/pois_teste_modelos.json") if "--maior" in sys.argv else SAMPLE_FILE
+    pois = load_pois(ficheiro)
+    print(f"{len(pois)} POIs lidos de {ficheiro}")
 
     inseridos = index_pois(pois, recreate=recriar)
     print(f"{inseridos} pontos inseridos/atualizados")
