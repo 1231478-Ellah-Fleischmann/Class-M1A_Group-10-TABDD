@@ -4,11 +4,28 @@ Documento a apresentar na sessão de discussão da semana 9.
 
 ## 1. Funcionalidades e integrações
 
-- Funcionalidades escolhidas:
-- As 3 funcionalidades que integram mais de uma base (pelo menos uma com a BD vetorial):
-  1.
-  2.
-  3.
+### 1.1 Funcionalidades
+
+| # | Funcionalidade | Bases envolvidas |
+|---|---|---|
+| 1 | Pesquisa em linguagem natural (semântica) | Qdrant, MySQL, MongoDB |
+| 2 | Página de detalhe do POI, com "locais semelhantes" | MySQL, Qdrant, MongoDB |
+| 3 | Recomendações personalizadas | MySQL, MongoDB, Qdrant |
+| 4 | Pesquisa por proximidade | MySQL |
+| 5 | Navegar destinos, categorias e POIs | MySQL |
+| 6 | Favoritos | MySQL, MongoDB |
+| 7 | Ratings | MySQL |
+| 8 | Registo, perfil e preferências | MySQL, MongoDB |
+
+As reviews (texto dos comentários) ficam fora do âmbito: o projeto usa apenas ratings.
+
+### 1.2 Funcionalidades que integram várias bases
+
+**1. Pesquisa em linguagem natural.** O Qdrant devolve os POIs semanticamente mais próximos do texto (com filtro por cidade e categoria). O MySQL fornece os dados estruturados desses POIs (nome, coordenadas, rating médio). O MongoDB regista a pesquisa no histórico do utilizador.
+
+**2. Página de detalhe do POI.** O MySQL fornece os dados base e a média dos ratings. O Qdrant devolve "locais semelhantes" a partir do vetor do próprio POI. O MongoDB regista a visualização.
+
+**3. Recomendações personalizadas.** O MongoDB fornece as preferências e o histórico do utilizador. O MySQL fornece favoritos e ratings. O Qdrant procura POIs semelhantes aos que o utilizador valorizou. O MySQL exclui o que já viu e devolve os detalhes.
 
 ## 2. Distribuição da informação pelas bases
 
