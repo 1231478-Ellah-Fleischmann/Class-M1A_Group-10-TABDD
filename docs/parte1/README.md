@@ -148,9 +148,34 @@ O servidor corre em Docker (`qdrant/qdrant:v1.20.0`, com volume para os dados). 
 
 ## 4. Arquitetura da aplicação
 
-- Diagrama (componentes, papel de cada base, interação entre sistemas)
-- Fluxo de cada uma das 3 integrações
-- Justificação das escolhas (tipo de dados, operações, desempenho, escalabilidade, flexibilidade, consistência, complexidade das queries)
+### 4.1 Componentes
+
+Diagrama em [`arquitetura.md`](arquitetura.md).
+
+A aplicação é um backend em Python organizado em camadas:
+
+- **Serviços:** implementam as funcionalidades (pesquisa semântica, página do POI, recomendações, gestão de utilizadores, favoritos e ratings). São a única camada que combina dados de várias bases.
+- **Repositórios:** um por base de dados. Escondem os detalhes de cada sistema (SQL, PyMongo, qdrant-client), para os serviços não dependerem da tecnologia.
+- **Modelo de embeddings:** transforma texto em vetores de 384 dimensões. É usado na pesquisa semântica, no cold start das recomendações e na indexação. Os "locais semelhantes" não precisam dele, porque usam o vetor já guardado do POI.
+- **Script de indexação:** lê os POIs do MySQL, gera os vetores e guarda-os no Qdrant. Volta a correr quando muda o modelo ou o formato do texto.
+
+**Papel de cada base:**
+
+| Base | Papel |
+|---|---|
+| MySQL | Fonte de verdade dos dados estruturados: utilizadores, destinos, categorias, POIs, favoritos e ratings. Cria o `poi.id` e o `utilizador.id`. |
+| MongoDB | Preferências do utilizador e histórico de atividade, com estrutura flexível. |
+| Qdrant | Vetores dos POIs para pesquisa por semelhança e recomendações. Cópia derivada do MySQL. |
+
+**Princípios da interação entre sistemas:**
+
+- As bases não comunicam entre si: é sempre o backend que consulta cada uma e junta os resultados.
+- A ligação entre bases faz-se por identificadores comuns (`poi_id`, `user_id`), criados no MySQL.
+- Não há transações distribuídas: a consistência entre bases é responsabilidade da aplicação (ver secção 2).
+
+### 4.2 Fluxo das integrações
+
+### 4.3 Justificação das escolhas
 
 ## 5. Questões para a professora
 ### Base de dados vetorial
