@@ -175,7 +175,27 @@ A aplicação é um backend em Python organizado em camadas:
 
 ### 4.2 Fluxo das integrações
 
+Diagramas de sequência em [`arquitetura.md`](arquitetura.md).
+
+**1. Pesquisa em linguagem natural.** O serviço converte a pergunta num vetor (prefixo `query:`), e o Qdrant devolve os `poi_id` mais próximos, com filtro opcional por cidade e categoria. O MySQL devolve os dados estruturados e o rating médio desses POIs numa só consulta (`WHERE id IN (...)`). O MongoDB regista a pesquisa no histórico. A ordem final é a do Qdrant (semelhança).
+
+**2. Página do POI.** O MySQL devolve os dados do POI e a média dos ratings. O Qdrant faz duas recomendações a partir do vetor guardado do próprio POI: uma filtrada pela cidade ("nesta cidade") e outra que a exclui ("noutros destinos"). Fizemos dois blocos porque, numa só lista, a categoria pesava mais do que a cidade e os resultados misturavam destinos. O MongoDB regista a visualização.
+
+**3. Recomendações personalizadas.** O MongoDB fornece os interesses do perfil e os POIs já vistos. O MySQL fornece os favoritos e os ratings: favoritos e ratings ≥ 4 são exemplos positivos e ratings ≤ 2 são negativos. O Qdrant recomenda POIs próximos dos positivos e afastados dos negativos (estratégia `best_score`), excluindo os já vistos. Sem positivos (utilizador novo), usa-se a pesquisa semântica com os interesses como texto; como o modelo é multilingue, interesses em inglês encontram POIs descritos em português. O MySQL devolve os detalhes.
+
 ### 4.3 Justificação das escolhas
+
+| Critério | MySQL | MongoDB | Qdrant |
+|---|---|---|---|
+| Tipo de dados | Estruturados, esquema fixo | Semiestruturados, campos variáveis | Vetores densos + payload pequeno |
+| Operações | `JOIN`, `AVG`, integridade referencial, proximidade espacial | Escritas frequentes de eventos, leitura do perfil por `user_id` | Pesquisa por semelhança (k vizinhos mais próximos) com filtros |
+| Desempenho | Índices B-tree e espacial | Índices `user_id` e `(user_id, timestamp)` | Índice HNSW (aproximado) + índices de payload |
+| Escalabilidade | Cresce sobretudo `rating`, sempre acedida por chaves indexadas | Histórico cresce sem limite; suporta sharding | Nº de POIs cresce devagar; suporta shards e quantização |
+| Flexibilidade | Baixa (alterar o esquema é explícito) | Alta (novos campos sem migração) | Mudar de modelo obriga a reindexar |
+| Consistência | ACID, fonte de verdade | Referências lógicas, validadas pela aplicação | Cópia derivada, consistência eventual |
+| Complexidade das queries | SQL declarativo, junções complexas | Filtros e agregações sobre documentos | Uma operação de semelhança + filtro |
+
+**Alternativa considerada.** Usar uma só base (por exemplo, PostgreSQL com `JSONB` e `pgvector`) simplificava a consistência, porque haveria transações entre todos os dados. Escolhemos a persistência poliglota para usar o sistema mais adequado a cada tipo de dado, que é o objetivo do projeto. Aceitamos em troca mais componentes para gerir e a consistência entre bases a cargo da aplicação.
 
 ## 5. Questões para a professora
 ### Base de dados vetorial
