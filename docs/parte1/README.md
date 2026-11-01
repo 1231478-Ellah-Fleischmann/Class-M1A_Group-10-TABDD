@@ -98,7 +98,53 @@ O esquema está versionado em `sql/schema.sql`, as regras de integridade estão 
 
 ### 3.2 MongoDB
 
-### 3.3 Base de dados vetorial
+### 3.3 Base de dados vetorial (Qdrant)
+
+**O que guarda.** Um vetor (embedding) por POI, que representa o significado do texto do POI, e um pequeno payload com campos de filtro. O Qdrant não é fonte de verdade de nenhum dado: é uma cópia derivada, que pode ser recalculada a partir dos dados do POI no MySQL.
+
+**Como está organizada.** Uma coleção `pois`. Cada ponto tem como `id` o `poi.id` do MySQL, um vetor de 384 dimensões e o payload `nome`, `cidade` e `categoria`. Diagrama em [`qdrant_ponto.md`](qdrant_ponto.md). O texto que gera o vetor junta nome, categoria, cidade e descrição ("texto enriquecido").
+
+**Relações.** Não há relações dentro do Qdrant. A ligação às outras bases faz-se só pelo identificador: o `id` do ponto é o `poi.id`, e os `poi_id` de favoritos e ratings (MySQL) e dos eventos (MongoDB) servem como exemplos positivos e negativos nas recomendações.
+
+**Operações principais.**
+- Indexação: gerar os embeddings em lote e fazer `upsert`; recriar a coleção quando muda o modelo ou o formato do texto.
+- Pesquisa semântica: converter a pergunta em vetor e devolver os k POIs mais próximos, com filtro opcional por cidade e categoria.
+- Locais semelhantes (página do POI): pesquisa a partir do vetor do próprio POI, em dois blocos: "nesta cidade" (filtro pela cidade) e "noutros destinos" (exclui a cidade).
+- Recomendação personalizada: positivos = favoritos e ratings ≥ 4; negativos = ratings ≤ 2; exclui POIs já vistos. Utilizador novo (cold start): pesquisa semântica com as categorias preferidas guardadas no MongoDB.
+- Manutenção: `upsert` do ponto quando um POI muda e `delete` quando é apagado.
+
+#### Decisões de modelação e justificação
+
+| Decisão | Justificação |
+|---|---|
+| Qdrant como base vetorial | Base dedicada a vetores, com filtros por payload durante a pesquisa, API de recomendação com exemplos positivos e negativos e cliente Python. Corre em Docker. |
+| Modelo `intfloat/multilingual-e5-small` (384 dimensões) | Os dados e as pesquisas estão em português e inglês. É pequeno e corre em CPU. Numa experiência com 80 POIs e 50 pesquisas acertou no 1.º resultado em 37/50 e ficou no top 5 em 46/50. |
+| Prefixos `query:` e `passage:` | O E5 foi treinado com estes prefixos; sem eles a qualidade desce. |
+| Texto enriquecido (nome, categoria, cidade, descrição) | Pesquisas como "museu no Porto" passam a encontrar POIs pela categoria e pela cidade, e não só pela descrição. |
+| Distância do cosseno | Mede a semelhança de significado independentemente do tamanho do vetor; é a métrica para que o E5 foi treinado. |
+| `id` do ponto = `poi.id` | Não é preciso uma tabela de correspondência; o Qdrant aceita inteiros de 64 bits, compatíveis com `BIGINT UNSIGNED`. |
+| Payload mínimo com índices `KEYWORD` em `cidade` e `categoria` | Filtrar na própria pesquisa vetorial, sem ir ao MySQL. É a única duplicação de dados (controlada). |
+| Estratégia `best_score` nas recomendações personalizadas | Com `average_vector`, um utilizador com dois gostos diferentes (ex.: praias e museus) recebia resultados "a meio caminho" que não correspondiam a nenhum dos gostos; `best_score` respeita cada gosto. |
+| Ordenar por ranking e não usar um limiar fixo de semelhança | Os scores do E5 ficam muito próximos (cerca de 0,85 a 0,92), por isso um limiar fixo não separa bem resultados bons de maus. |
+
+#### Desempenho
+
+- Índice HNSW (o padrão do Qdrant): pesquisa aproximada que não compara a pergunta com todos os vetores.
+- Os índices de payload permitem aplicar os filtros durante a pesquisa, em vez de filtrar depois e perder resultados.
+- Cada vetor ocupa cerca de 1,5 KB (384 × 4 bytes); 10 000 POIs ocupam cerca de 15 MB de vetores.
+- O passo mais lento é calcular o embedding da pergunta; o modelo é carregado uma única vez.
+
+#### Escalabilidade
+
+O número de POIs cresce devagar, ao contrário dos ratings e dos eventos. Se fosse preciso, o Qdrant suporta modo distribuído (shards e réplicas) e quantização para reduzir a memória.
+
+#### Consistência
+
+Não há transações entre o Qdrant e o MySQL: a aplicação faz o `upsert` ou o `delete` do ponto quando o POI muda. Se as duas bases ficarem diferentes, basta reindexar, porque os dados do Qdrant são derivados.
+
+#### Manutenção
+
+O servidor corre em Docker (`qdrant/qdrant:v1.20.0`, com volume para os dados). A indexação é um script que se pode repetir (`--recriar`). Mudar de modelo obriga a reindexar todos os POIs, porque muda o espaço vetorial e pode mudar a dimensão.
 
 ## 4. Arquitetura da aplicação
 
