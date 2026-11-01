@@ -29,9 +29,22 @@ As reviews (texto dos comentários) ficam fora do âmbito: o projeto usa apenas 
 
 ## 2. Distribuição da informação pelas bases
 
+**Princípio:** cada BD tem uma única fonte de verdade. O que se repete entre bases são identificadores (`poi_id`, `user_id`) e os campos de filtro no Qdrant.
+
 | Dado | Base | Justificação |
 |---|---|---|
-| | | |
+| Utilizadores (nome, email, país, data de registo) | MySQL | Estrutura fixa, `email` único e referenciado por favoritos e ratings. |
+| Destinos e categorias | MySQL | Dados de referência pequenos e estáveis, usados em junções e filtros. |
+| POIs: dados estruturados (nome, morada, coordenadas, preço médio, destino, categoria) | MySQL | Esquema fixo e relações N:1. Coordenadas em `POINT` com índice espacial. `poi.id` é o identificador canónico das três bases. |
+| Descrição textual do POI | MySQL *(a confirmar)* | Fonte do texto que gera os embeddings; fica junto dos restantes dados do POI. |
+| Favoritos | MySQL | Relação N:M com chave composta que impede duplicados. |
+| Ratings (1 a 5) | MySQL | Relação N:M com `UNIQUE (utilizador_id, poi_id)` e `CHECK`; agregações (`AVG`) são o ponto forte do relacional. |
+| Preferências do utilizador (interesses, estilo de viagem, orçamento, atividades) | MongoDB (`user_profiles`) | Estrutura flexível e variável; arrays no próprio documento. |
+| Histórico de atividade (pesquisas, visualizações) | MongoDB (`user_interactions`) | Escritas frequentes e campo `context` flexível consoante o tipo de evento. |
+| Embeddings dos POIs (vetores) | Qdrant | Pesquisa por similaridade (distância do cosseno). Dados derivados: recalculáveis a partir da descrição. |
+| Payload no Qdrant (`nome`, `cidade`, `categoria`) | Qdrant | Permite filtrar a pesquisa semântica por cidade e categoria, com índice no Qdrant. |
+
+**Consequências:** não há transações entre bases, por isso a consistência fica a cargo da aplicação (por exemplo, ao apagar um POI, remover também o vetor no Qdrant). A duplicação é controlada: só se repetem identificadores e os três campos do payload do Qdrant.
 
 ## 3. Modelos de dados
 
