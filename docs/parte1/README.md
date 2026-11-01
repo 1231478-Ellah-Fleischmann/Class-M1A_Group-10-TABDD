@@ -153,3 +153,10 @@ O servidor corre em Docker (`qdrant/qdrant:v1.20.0`, com volume para os dados). 
 - Justificação das escolhas (tipo de dados, operações, desempenho, escalabilidade, flexibilidade, consistência, complexidade das queries)
 
 ## 5. Questões para a professora
+### Base de dados vetorial
+
+1. **Payload por nome ou por id.** O payload guarda `cidade` e `categoria` em texto, para filtrar sem ir ao MySQL. A alternativa é guardar `destino_id` e `categoria_id`, que não ficam desatualizados se um nome mudar, mas obrigam a converter nomes em ids antes de cada pesquisa. Qual das opções é preferível?
+2. **Sincronização com o MySQL.** O Qdrant é uma cópia derivada: a aplicação faz `upsert`/`delete` do ponto quando o POI muda e, se as bases divergirem, reindexa-se tudo. Esta consistência eventual é aceitável, ou espera-se um mecanismo mais forte (por exemplo, uma fila de eventos)?
+3. **Avaliação da pesquisa semântica.** Medimos a qualidade com 50 pesquisas de teste sobre 80 POIs (acerto no 1.º resultado e no top 5). Chega, ou espera-se outra métrica (por exemplo, recall@k ou MRR) ou um conjunto maior?
+4. **Cenário de índices no Qdrant.** Para a análise de índices pensamos comparar a pesquisa com filtro com e sem índice de payload, e a pesquisa HNSW com a pesquisa exata (`exact=True`). Algum destes cenários é o mais adequado?
+5. **Limiar de semelhança.** Os scores do E5 ficam muito próximos (0,85 a 0,92), por isso ordenamos por ranking (top k) e não usamos um limiar fixo. Esta abordagem é adequada?
