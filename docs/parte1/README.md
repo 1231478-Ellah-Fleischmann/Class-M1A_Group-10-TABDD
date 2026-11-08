@@ -36,7 +36,7 @@ As reviews (texto dos comentários) ficam fora do âmbito: o projeto usa apenas 
 | Utilizadores (nome, email, país, data de registo) | MySQL | Estrutura fixa, `email` único e referenciado por favoritos e ratings. |
 | Destinos e categorias | MySQL | Dados de referência pequenos e estáveis, usados em junções e filtros. |
 | POIs: dados estruturados (nome, morada, coordenadas, preço médio, destino, categoria) | MySQL | Esquema fixo e relações N:1. Coordenadas em `POINT` com índice espacial. `poi.id` é o identificador canónico das três bases. |
-| Descrição textual do POI | MySQL *(a confirmar)* | Fonte do texto que gera os embeddings; fica junto dos restantes dados do POI. |
+| Descrição textual do POI | MySQL | Fonte do texto que gera os embeddings; fica junto dos restantes dados do POI. |
 | Favoritos | MySQL | Relação N:M com chave composta que impede duplicados. |
 | Ratings (1 a 5) | MySQL | Relação N:M com `UNIQUE (utilizador_id, poi_id)` e `CHECK`; agregações (`AVG`) são o ponto forte do relacional. |
 | Preferências do utilizador (interesses, estilo de viagem, orçamento, atividades) | MongoDB (`user_profiles`) | Estrutura flexível e variável; arrays no próprio documento. |
@@ -52,7 +52,7 @@ Para cada base: o que guarda, como se organiza, relações, operações, padrõe
 
 ### 3.1 MySQL
 
-**O que guarda.** Dados estruturados e com relações bem definidas: utilizadores, destinos, categorias, POIs (nome, morada, coordenadas, preço médio), favoritos e ratings.
+**O que guarda.** Dados estruturados e com relações bem definidas: utilizadores, destinos, categorias, POIs (nome, morada, descrição, coordenadas, preço médio), favoritos e ratings.
 
 **Como está organizada.** Seis tabelas (`utilizador`, `destino`, `categoria`, `poi`, `favorito`, `rating`). Diagrama ER em [`mysql_er.md`](mysql_er.md) e esquema executável em [`sql/schema.sql`](../../sql/schema.sql).
 
@@ -81,7 +81,7 @@ Para cada base: o que guarda, como se organiza, relações, operações, padrõe
 - Índices de chave primária e de unicidade (`email`, `(nome, pais)` em destino, `(utilizador_id, poi_id)` em rating).
 - Índice composto `(destino_id, categoria_id)` em `poi`, para as listagens por destino e categoria.
 - Índices em `rating(poi_id)` e `favorito(poi_id)`, para consultar por POI.
-- A média dos ratings calcula-se com `AVG`. *(A confirmar: guardar a média numa coluna de `poi`, padrão Computed, se for uma consulta muito frequente.)*
+- A média dos ratings calcula-se com `AVG`. *(Decisão em aberto: ver questão na secção 5.)*
 - Na pesquisa por proximidade, filtra-se primeiro por uma caixa envolvente que usa o índice espacial e só depois se calcula a distância exata nos candidatos, porque `ST_Distance_Sphere` não usa o índice.
 
 #### Escalabilidade
@@ -255,3 +255,7 @@ Diagramas de sequência em [`arquitetura.md`](arquitetura.md).
 3. **Avaliação da pesquisa semântica.** Medimos a qualidade com 50 pesquisas de teste sobre 80 POIs (acerto no 1.º resultado e no top 5). Chega, ou espera-se outra métrica (por exemplo, recall@k ou MRR) ou um conjunto maior?
 4. **Cenário de índices no Qdrant.** Para a análise de índices pensamos comparar a pesquisa com filtro com e sem índice de payload, e a pesquisa HNSW com a pesquisa exata (`exact=True`). Algum destes cenários é o mais adequado?
 5. **Limiar de semelhança.** Os scores do E5 ficam muito próximos (0,85 a 0,92), por isso ordenamos por ranking (top k) e não usamos um limiar fixo. Esta abordagem é adequada?
+  
+### Base de dados relacional
+
+1. **Média dos ratings.** Calculamos a média com `AVG(valor)` sobre `rating`, apoiada por um índice em `poi_id`. A alternativa é guardar a média numa coluna de `poi` (padrão Computed), atualizada a cada novo rating: acelera a leitura, mas obriga a mantê-la coerente. Qual é preferível?

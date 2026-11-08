@@ -33,6 +33,7 @@ erDiagram
     smallint categoria_id FK
     varchar nome
     varchar morada
+    text descricao
     point localizacao
     decimal preco_medio
   }
@@ -55,7 +56,7 @@ erDiagram
 - O rating individual fica so no MySQL (fonte de verdade); o MongoDB guarda o texto das reviews e referencia `poi_id` e `utilizador_id`.
 - Restricao `UNIQUE (utilizador_id, poi_id)` em `rating`: um utilizador so avalia um POI uma vez.
 - Indices espaciais em `poi` e `destino` (pesquisa por proximidade); indice composto `(destino_id, categoria_id)` em `poi`.
-- A descrição textual de cada POI fica no MongoDB (documento com `poi_id`) e é a base dos embeddings guardados no Qdrant. *(a confirmar)*
+- A descrição textual de cada POI fica na coluna `poi.descricao` do MySQL e é a base dos embeddings guardados no Qdrant.
 - As preferências do utilizador (categorias preferidas) ficam no MongoDB. Também servem para recomendar a utilizadores novos. *(a confirmar)*
 - O histórico de atividade do utilizador fica no MongoDB. *(a confirmar)*
 - Ao apagar um POI, o `ON DELETE CASCADE` só limpa o MySQL; a aplicação apaga também o documento no MongoDB e o vetor no Qdrant.

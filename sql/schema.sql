@@ -1,10 +1,6 @@
 -- Smart Tourism Platform - esquema MySQL 8.0 (RASCUNHO para discussão)
 -- Executar com o utilizador do projeto, na base smart_tourism.
 -- Nota: em MySQL 8, para SRID 4326 a ordem das coordenadas em POINT é (latitude, longitude).
--- Falta decidir/acrescentar
---   1. Onde fica a descrição textual dos POIs (proposta: MongoDB). É a base dos embeddings do Qdrant.
---   2. Onde ficam as preferências do utilizador (proposta: MongoDB para mais flexibilidade).
---   3. Onde fica o histórico de atividade (proposta: MongoDB).
 
 USE smart_tourism;
 
@@ -46,6 +42,7 @@ CREATE TABLE poi (
   categoria_id  SMALLINT UNSIGNED NOT NULL,
   nome          VARCHAR(200)      NOT NULL,
   morada        VARCHAR(255)      NULL,
+  descricao     TEXT              NULL,
   localizacao   POINT SRID 4326   NOT NULL,
   preco_medio   DECIMAL(8,2)      NULL,
   PRIMARY KEY (id),
