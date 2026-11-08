@@ -119,7 +119,7 @@ O esquema está versionado em `sql/schema.sql`, as regras de integridade estão 
 - Escritas: criar ou atualizar preferências e registar novas pesquisas ou visualizações.
 - Atualizações: modificar os interesses, o estilo de viagem, o orçamento ou as atividades preferidas de um utilizador.
 
-**#### Decisões de modelação e justificação**
+#### Decisões de modelação e justificação
 
 | Decisão | Justificação |
 |---|---|
@@ -130,24 +130,25 @@ O esquema está versionado em `sql/schema.sql`, as regras de integridade estão 
 | Referência a POIs através de `poi_id` | Permite relacionar as interações com os POIs do MySQL e do Qdrant, mantendo o MySQL como fonte de verdade dos dados estruturados. |
 | Identificadores `user_id` do tipo Long | Mantêm a compatibilidade com os identificadores `BIGINT` utilizados no MySQL. |
 
-**#### Desempenho**
+#### Desempenho
 
 - Índice único em `user_profiles(user_id)`, para localizar rapidamente as preferências de um utilizador e garantir que existe apenas um perfil por utilizador.
 - Índice único em `user_interactions(event_id)`, para evitar o registo duplicado do mesmo evento.
 - Índice composto em `user_interactions(user_id, timestamp DESC)`, para consultar eficientemente o histórico recente de um utilizador.
 - A utilização destes índices reduz a quantidade de documentos examinados nas consultas mais frequentes, embora introduza algum custo adicional nas operações de escrita e no armazenamento.
 
-**#### Escalabilidade**
+#### Escalabilidade
 
 A coleção `user_interactions` deverá crescer mais rapidamente, uma vez que cada pesquisa ou visualização pode gerar um novo documento. A estrutura flexível do MongoDB permite adicionar novos tipos de interação e novos campos ao objeto `context` sem alterar um esquema rígido. Caso o volume de dados aumente significativamente, poderá ser considerada a utilização de *sharding*.
 
-**#### Consistência**
+#### Consistência
 
 O MongoDB mantém a consistência das operações dentro da própria base de dados, mas não existem transações distribuídas com o MySQL ou o Qdrant. Os campos `user_id` e `poi_id` são referências lógicas, pelo que a aplicação é responsável por garantir que correspondem a registos existentes nas restantes bases. O MySQL continua a ser a fonte de verdade dos dados dos utilizadores e dos POIs.
 
-**#### Manutenção**
+#### Manutenção
 
 A utilização de duas coleções com responsabilidades distintas facilita a manutenção e a evolução do modelo. A estrutura flexível permite introduzir novos campos nas preferências ou novos tipos de interação sem alterações complexas. Os índices devem ser revistos à medida que os padrões de consulta e o volume de dados evoluem.
+
 ### 3.3 Base de dados vetorial (Qdrant)
 
 **O que guarda.** Um vetor (embedding) por POI, que representa o significado do texto do POI, e um pequeno payload com campos de filtro. O Qdrant não é fonte de verdade de nenhum dado: é uma cópia derivada, que pode ser recalculada a partir dos dados do POI no MySQL.
