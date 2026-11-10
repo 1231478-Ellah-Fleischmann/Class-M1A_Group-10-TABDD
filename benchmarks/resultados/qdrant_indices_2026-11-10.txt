@@ -1,0 +1,24 @@
+Benchmark de índices no Qdrant - 2026-11-10
+50 pesquisas x 5 repetições, top 10.
+servidor = campo 'time' do Qdrant; cliente = inclui o pedido HTTP.
+
+=== sem filtro: 50000 pontos cumprem o filtro ===
+coleção           modo     servidor med  servidor p95  cliente med  recall@10
+bench_sem_indice  HNSW            3.198         4.944        49.95      0.982
+bench_sem_indice  exata           4.579         8.436        52.00      1.000
+bench_com_indice  HNSW            4.658         5.673        51.34      0.982
+bench_com_indice  exata           4.669         9.345        52.24      1.000
+
+=== cidade=Lisboa (pouco seletivo): 12433 pontos cumprem o filtro ===
+coleção           modo     servidor med  servidor p95  cliente med  recall@10
+bench_sem_indice  HNSW           14.738        25.791        61.37      1.000
+bench_sem_indice  exata          15.026        26.105        62.05      1.000
+bench_com_indice  HNSW            4.024         4.943        51.72      1.000
+bench_com_indice  exata           2.305         2.968        47.97      1.000
+
+=== cidade=Aveiro + categoria=bar (muito seletivo): 23 pontos cumprem o filtro ===
+coleção           modo     servidor med  servidor p95  cliente med  recall@10
+bench_sem_indice  HNSW           13.843        21.310        60.82      1.000
+bench_sem_indice  exata          24.454        41.259        72.25      1.000
+bench_com_indice  HNSW            1.752         2.505        51.16      1.000
+bench_com_indice  exata           1.727         2.624        51.25      1.000
