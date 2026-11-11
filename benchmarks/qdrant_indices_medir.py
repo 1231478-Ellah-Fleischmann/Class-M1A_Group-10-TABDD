@@ -13,7 +13,7 @@ Uso: python -m benchmarks.qdrant_indices_medir
 """
 import statistics
 import time
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 import httpx
@@ -159,6 +159,6 @@ if __name__ == "__main__":
                 )
                 mostrar(f"{'':<25}plano: {resumo_plano(antes, depois)}")
 
-    ficheiro = Path(f"benchmarks/resultados/qdrant_indices_{date.today()}.txt")
+    ficheiro = Path(f"benchmarks/resultados/qdrant_indices_{datetime.now():%Y-%m-%d_%H%M}.txt")
     ficheiro.write_text("\n".join(linhas), encoding="utf-8")
     print(f"\nResultados guardados em {ficheiro}")

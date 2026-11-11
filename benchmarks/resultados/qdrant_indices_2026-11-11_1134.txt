@@ -1,36 +1,36 @@
-Benchmark de índices no Qdrant - 2026-11-10
+Benchmark de índices no Qdrant - 2026-11-11
 50 pesquisas x 5 repetições, top 10.
 servidor = campo 'time' do Qdrant; cliente = inclui o pedido HTTP.
 
 === sem filtro: 50000 pontos cumprem o filtro ===
 coleção           modo     servidor med  servidor p95  cliente med  recall@10
-bench_sem_indice  HNSW            3.156         4.029        51.83      0.982
+bench_sem_indice  HNSW            1.949         3.234        48.03      0.982
                          plano: unfiltered_hnsw=1750, unfiltered_plain=250
-bench_sem_indice  exata           4.966         5.865        52.06      1.000
+bench_sem_indice  exata           4.561         6.370        49.33      1.000
                          plano: unfiltered_plain=250, unfiltered_exact=1750
-bench_com_indice  HNSW            5.436         7.272        54.05      0.982
+bench_com_indice  HNSW            2.804         4.266        48.19      0.982
                          plano: unfiltered_hnsw=1000, unfiltered_plain=750
-bench_com_indice  exata           5.654        10.025        54.46      1.000
+bench_com_indice  exata           4.326         5.572        48.77      1.000
                          plano: unfiltered_exact=1750
 
 === cidade=Lisboa (pouco seletivo): 12433 pontos cumprem o filtro ===
 coleção           modo     servidor med  servidor p95  cliente med  recall@10
-bench_sem_indice  HNSW           25.115        39.036        72.86      1.000
+bench_sem_indice  HNSW           10.032        13.024        55.83      1.000
                          plano: filtered_small_cardinality=1750, filtered_plain=250
-bench_sem_indice  exata          24.728        37.724        72.48      1.000
+bench_sem_indice  exata           9.559        11.486        55.25      1.000
                          plano: filtered_plain=250, filtered_exact=1750
-bench_com_indice  HNSW            4.459         5.459        52.18      1.000
+bench_com_indice  HNSW            2.193         2.995        47.88      1.000
                          plano: filtered_small_cardinality=1750
-bench_com_indice  exata           4.372         5.554        52.27      1.000
+bench_com_indice  exata           2.359         3.557        48.10      1.000
                          plano: filtered_exact=1750
 
 === cidade=Aveiro + categoria=bar (muito seletivo): 23 pontos cumprem o filtro ===
 coleção           modo     servidor med  servidor p95  cliente med  recall@10
-bench_sem_indice  HNSW           24.208        39.302        71.93      1.000
+bench_sem_indice  HNSW            8.606        10.314        54.05      1.000
                          plano: filtered_small_cardinality=1750, filtered_plain=250
-bench_sem_indice  exata          23.855        39.575        71.39      1.000
+bench_sem_indice  exata           8.637        10.373        54.07      1.000
                          plano: filtered_plain=250, filtered_exact=1750
-bench_com_indice  HNSW            1.706         2.682        48.96      1.000
+bench_com_indice  HNSW            0.825         1.333        47.25      1.000
                          plano: filtered_small_cardinality=1750
-bench_com_indice  exata           1.761         2.681        50.68      1.000
+bench_com_indice  exata           0.877         1.402        47.38      1.000
                          plano: filtered_exact=1750
