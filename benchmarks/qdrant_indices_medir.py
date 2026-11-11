@@ -77,6 +77,41 @@ def percentil(valores: list[float], p: int) -> float:
     ordenados = sorted(valores)
     return ordenados[min(len(ordenados) - 1, round(p / 100 * (len(ordenados) - 1)))]
 
+TIPOS_PLANO = [
+    "unfiltered_hnsw", "unfiltered_plain", "unfiltered_exact",
+    "filtered_small_cardinality", "filtered_large_cardinality",
+    "filtered_plain", "filtered_exact",
+]
+
+
+def contagem_planos(colecao: str) -> dict[str, int]:
+    """Soma, em todos os segmentos da coleção, quantas pesquisas o Qdrant fez de cada tipo."""
+    r = http.get("/telemetry", params={"details_level": 10})
+    r.raise_for_status()
+    total = dict.fromkeys(TIPOS_PLANO, 0)
+
+    def percorrer(no, dentro_da_colecao: bool) -> None:
+        if isinstance(no, dict):
+            if no.get("id") == colecao:
+                dentro_da_colecao = True
+            for chave, valor in no.items():
+                if dentro_da_colecao and chave in total and isinstance(valor, dict):
+                    total[chave] += valor.get("count", 0)
+                else:
+                    percorrer(valor, dentro_da_colecao)
+        elif isinstance(no, list):
+            for item in no:
+                percorrer(item, dentro_da_colecao)
+
+    percorrer(r.json()["result"], False)
+    return total
+
+
+def resumo_plano(antes: dict[str, int], depois: dict[str, int]) -> str:
+    """Mostra só os tipos de pesquisa que aumentaram (= plano usado)."""
+    diferencas = {k: depois[k] - antes[k] for k in TIPOS_PLANO if depois[k] - antes[k] > 0}
+    return ", ".join(f"{k}={v}" for k, v in diferencas.items()) or "(sem dados)"
+
 
 if __name__ == "__main__":
     testes = carregar_testes(Path("benchmarks/casos_teste_modelos.json"))
@@ -107,6 +142,7 @@ if __name__ == "__main__":
                 for v in vetores[:5]:                 # aquecimento (não conta)
                     pesquisar(colecao, v, f, exata)
 
+                antes = contagem_planos(colecao)
                 t_cliente, t_servidor, recalls = [], [], []
                 for _ in range(REPETICOES):
                     for v, certos in zip(vetores, verdade):
@@ -114,12 +150,14 @@ if __name__ == "__main__":
                         t_cliente.append(ms_c)
                         t_servidor.append(ms_s)
                         recalls.append(len(certos & set(ids)) / len(certos) if certos else 1.0)
+                depois = contagem_planos(colecao)
 
                 mostrar(
                     f"{colecao:<18}{nome_modo:<7}"
                     f"{statistics.median(t_servidor):>14.3f}{percentil(t_servidor, 95):>14.3f}"
                     f"{statistics.median(t_cliente):>13.2f}{statistics.mean(recalls):>11.3f}"
                 )
+                mostrar(f"{'':<25}plano: {resumo_plano(antes, depois)}")
 
     ficheiro = Path(f"benchmarks/resultados/qdrant_indices_{date.today()}.txt")
     ficheiro.write_text("\n".join(linhas), encoding="utf-8")
