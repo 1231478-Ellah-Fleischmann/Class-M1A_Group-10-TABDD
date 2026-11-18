@@ -53,3 +53,4 @@ erDiagram
 - Ao apagar um POI, o `ON DELETE CASCADE` só limpa o MySQL; a aplicação apaga também o documento no MongoDB e o vetor no Qdrant.
 - O payload do Qdrant vai guardar `destino_id` e `categoria_id` (em vez dos nomes), para filtrar por número e não ficar desatualizado se um nome mudar no MySQL.
 - Rating médio: calculado com `AVG` ou guardado numa coluna de `poi` (padrão Computed)? A discutir.
+- Os ratings e comentários dos POIs ficam no MongoDB (decisão após o feedback da Parte I).
