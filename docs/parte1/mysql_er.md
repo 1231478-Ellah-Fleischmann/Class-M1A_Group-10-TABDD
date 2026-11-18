@@ -6,8 +6,6 @@ erDiagram
   CATEGORIA  ||--o{ POI       : classifica
   UTILIZADOR ||--o{ FAVORITO  : guarda
   POI        ||--o{ FAVORITO  : e_guardado
-  UTILIZADOR ||--o{ RATING    : avalia
-  POI        ||--o{ RATING    : e_avaliado
 
   UTILIZADOR {
     bigint id PK
@@ -42,13 +40,6 @@ erDiagram
     bigint poi_id PK, FK
     datetime data_adicionado
   }
-  RATING {
-    bigint id PK
-    bigint utilizador_id FK
-    bigint poi_id FK
-    tinyint valor
-    datetime data
-  }
 ```
 
 ## Pontos a discutir com o grupo
@@ -62,3 +53,4 @@ erDiagram
 - Ao apagar um POI, o `ON DELETE CASCADE` só limpa o MySQL; a aplicação apaga também o documento no MongoDB e o vetor no Qdrant.
 - O payload do Qdrant vai guardar `destino_id` e `categoria_id` (em vez dos nomes), para filtrar por número e não ficar desatualizado se um nome mudar no MySQL.
 - Rating médio: calculado com `AVG` ou guardado numa coluna de `poi` (padrão Computed)? A discutir.
+- Os ratings e comentários dos POIs ficam no MongoDB (decisão após o feedback da Parte I).

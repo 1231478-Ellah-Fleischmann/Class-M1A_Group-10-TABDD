@@ -61,20 +61,3 @@ CREATE TABLE favorito (
   CONSTRAINT fk_favorito_utilizador FOREIGN KEY (utilizador_id) REFERENCES utilizador (id) ON DELETE CASCADE,
   CONSTRAINT fk_favorito_poi        FOREIGN KEY (poi_id)        REFERENCES poi (id)        ON DELETE CASCADE
 ) ENGINE=InnoDB;
-
--- NOTA: o rating médio de cada POI é calculado com AVG(valor), apoiado pelo ix_rating_poi.
---       Se for uma consulta muito frequente, pode discutir-se guardar a média numa coluna
---       de poi, atualizada a cada novo rating (padrão Computed). Possível cenário para a Parte II.
-CREATE TABLE rating (
-  id             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  utilizador_id  BIGINT UNSIGNED NOT NULL,
-  poi_id         BIGINT UNSIGNED NOT NULL,
-  valor          TINYINT UNSIGNED NOT NULL,
-  data           DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
-  UNIQUE KEY uq_rating_utilizador_poi (utilizador_id, poi_id),
-  KEY ix_rating_poi (poi_id),
-  CONSTRAINT ck_rating_valor CHECK (valor BETWEEN 1 AND 5),
-  CONSTRAINT fk_rating_utilizador FOREIGN KEY (utilizador_id) REFERENCES utilizador (id) ON DELETE CASCADE,
-  CONSTRAINT fk_rating_poi        FOREIGN KEY (poi_id)        REFERENCES poi (id)        ON DELETE CASCADE
-) ENGINE=InnoDB;
