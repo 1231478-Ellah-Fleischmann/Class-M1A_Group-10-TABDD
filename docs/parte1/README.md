@@ -14,18 +14,18 @@ Documento a apresentar na sessão de discussão da semana 9.
 | 4 | Pesquisa por proximidade | MySQL |
 | 5 | Navegar destinos, categorias e POIs | MySQL |
 | 6 | Favoritos | MySQL, MongoDB |
-| 7 | Ratings | MySQL |
+| 7 | Ratings e comentários | MongoDB |
 | 8 | Registo, perfil e preferências | MySQL, MongoDB |
 
-As reviews (texto dos comentários) ficam fora do âmbito: o projeto usa apenas ratings.
+Os ratings e comentários dos POIs ficam no MongoDB, no documento do POI (padrão Subset).
 
 ### 1.2 Funcionalidades que integram várias bases
 
-**1. Pesquisa em linguagem natural.** O Qdrant devolve os POIs semanticamente mais próximos do texto (com filtro por cidade e categoria). O MySQL fornece os dados estruturados desses POIs (nome, coordenadas, rating médio). O MongoDB regista a pesquisa no histórico do utilizador.
+**1. Pesquisa em linguagem natural.** O Qdrant devolve os POIs semanticamente mais próximos do texto (com filtro por cidade e categoria). O MySQL fornece os dados estruturados desses POIs (nome, coordenadas) e o MongoDB o rating médio. O MongoDB regista também a pesquisa no histórico do utilizador.
 
-**2. Página de detalhe do POI.** O MySQL fornece os dados base e a média dos ratings. O Qdrant devolve "locais semelhantes" a partir do vetor do próprio POI. O MongoDB regista a visualização.
+**2. Página de detalhe do POI.** O MySQL fornece os dados base. O MongoDB fornece o rating médio e os comentários mais recentes. O Qdrant devolve "locais semelhantes" a partir do vetor do próprio POI. O MongoDB regista a visualização.
 
-**3. Recomendações personalizadas.** O MongoDB fornece as preferências e o histórico do utilizador. O MySQL fornece favoritos e ratings. O Qdrant procura POIs semelhantes aos que o utilizador valorizou. O MySQL exclui o que já viu e devolve os detalhes.
+**3. Recomendações personalizadas.** O MongoDB fornece as preferências, o histórico e os ratings do utilizador. O MySQL fornece os favoritos. O Qdrant procura POIs semelhantes aos que o utilizador valorizou. O MySQL exclui o que já viu e devolve os detalhes.
 
 ## 2. Distribuição da informação pelas bases
 
@@ -33,69 +33,67 @@ As reviews (texto dos comentários) ficam fora do âmbito: o projeto usa apenas 
 
 | Dado | Base | Justificação |
 |---|---|---|
-| Utilizadores (nome, email, país, data de registo) | MySQL | Estrutura fixa, `email` único e referenciado por favoritos e ratings. |
+| Utilizadores (nome, email, país, data de registo) | MySQL | Estrutura fixa, `email` único e referenciado por favoritos. |
 | Destinos e categorias | MySQL | Dados de referência pequenos e estáveis, usados em junções e filtros. |
 | POIs: dados estruturados (nome, morada, coordenadas, preço médio, destino, categoria) | MySQL | Esquema fixo e relações N:1. Coordenadas em `POINT` com índice espacial. `poi.id` é o identificador canónico das três bases. |
 | Descrição textual do POI | MySQL | Fonte do texto que gera os embeddings; fica junto dos restantes dados do POI. |
 | Favoritos | MySQL | Relação N:M com chave composta que impede duplicados. |
-| Ratings (1 a 5) | MySQL | Relação N:M com `UNIQUE (utilizador_id, poi_id)` e `CHECK`; agregações (`AVG`) são o ponto forte do relacional. |
+| Ratings e comentários dos POIs | MongoDB | Lidos sempre com o POI; os mais recentes ficam no documento do POI e os antigos numa coleção à parte (padrão Subset). |
 | Preferências do utilizador (interesses, estilo de viagem, orçamento, atividades) | MongoDB (`user_profiles`) | Estrutura flexível e variável; arrays no próprio documento. |
 | Histórico de atividade (pesquisas, visualizações) | MongoDB (`user_interactions`) | Escritas frequentes e campo `context` flexível consoante o tipo de evento. |
 | Embeddings dos POIs (vetores) | Qdrant | Pesquisa por similaridade (distância do cosseno). Dados derivados: recalculáveis a partir da descrição. |
 | Payload no Qdrant (`nome`, `cidade`, `categoria`) | Qdrant | Permite filtrar a pesquisa semântica por cidade e categoria, com índice no Qdrant. |
 
-**Consequências:** não há transações entre bases, por isso a consistência fica a cargo da aplicação (por exemplo, ao apagar um POI, remover também o vetor no Qdrant). A duplicação é controlada: só se repetem identificadores e os três campos do payload do Qdrant.
+**Consequências:** não há transações entre bases, por isso a consistência fica a cargo da aplicação (por exemplo, ao apagar um POI, remover também o documento no MongoDB e o vetor no Qdrant). A duplicação é controlada: só se repetem identificadores e os três campos do payload do Qdrant.
 
 ## 3. Modelos de dados
 
 Para cada base: o que guarda, como se organiza, relações, operações, padrões de desenho, decisões de modelação e impacto em desempenho, escalabilidade e manutenção.
 
-### 3.1 MySQL
+### 3.1 MySQL (base relacional)
 
-**O que guarda.** Dados estruturados e com relações bem definidas: utilizadores, destinos, categorias, POIs (nome, morada, descrição, coordenadas, preço médio), favoritos e ratings.
+**O que guarda.** Dados estruturados e com relações bem definidas: utilizadores, destinos, categorias, POIs (nome, morada, descrição, coordenadas, preço médio) e favoritos.
 
-**Como está organizada.** Seis tabelas (`utilizador`, `destino`, `categoria`, `poi`, `favorito`, `rating`). Diagrama ER em [`mysql_er.md`](mysql_er.md) e esquema executável em [`sql/schema.sql`](../../sql/schema.sql).
+**Como está organizada.** Cinco tabelas (`utilizador`, `destino`, `categoria`, `poi`, `favorito`). Diagrama ER em [`mysql_er.md`](mysql_er.md) e esquema executável em [`sql/schema.sql`](../../sql/schema.sql).
 
 **Relações.**
 - Um destino tem muitos POIs e uma categoria classifica muitos POIs (1:N).
-- Utilizadores e POIs relacionam-se de forma N:M através de `favorito` e `rating`.
+- Utilizadores e POIs relacionam-se de forma N:M através de `favorito`.
 
 **Operações principais.**
-- Leituras: listar POIs por destino e categoria, pesquisa por proximidade, rating médio de um POI, favoritos e ratings de um utilizador.
-- Escritas: registar utilizador, adicionar ou remover favorito, criar ou alterar um rating.
+- Leituras: listar POIs por destino e categoria, obter um POI, obter vários POIs pelos ids devolvidos pelo Qdrant, pesquisa por proximidade, favoritos de um utilizador.
+- Escritas: registar utilizador, adicionar ou remover favorito.
 
 #### Decisões de modelação e justificação
 
 | Decisão | Justificação |
 |---|---|
-| Dados estruturados e relacionais no MySQL | Esquema fixo, relações bem definidas e necessidade de integridade referencial e de agregações (`AVG`, `JOIN`), que são o ponto forte do modelo relacional. |
+| Dados estruturados e relacionais no MySQL | Esquema fixo, relações bem definidas e necessidade de integridade referencial e de `JOIN`, que são o ponto forte do modelo relacional. |
 | `poi.id` (`BIGINT UNSIGNED`) como identificador canónico das três bases | Permite cruzar MySQL, MongoDB e Qdrant sem ambiguidade. É compatível com os ids inteiros de 64 bits do Qdrant. |
-| `UNIQUE (utilizador_id, poi_id)` e `CHECK (valor BETWEEN 1 AND 5)` em `rating` | Garante na própria base que um utilizador só avalia um POI uma vez e que o valor é válido, sem depender da aplicação. |
-| `POINT SRID 4326` com `SPATIAL INDEX` em `poi` e `destino` | Pesquisa por proximidade sem percorrer a tabela toda. O SRID 4326 corresponde a coordenadas GPS (latitude, longitude). |
-| Chaves estrangeiras em todas as relações | Impedem registos órfãos e mantêm a consistência dentro do MySQL. |
-| `ON DELETE CASCADE` em `favorito` e `rating` | Apagar um utilizador ou um POI remove os registos associados. Só atua no MySQL (ver Consistência). |
-| Rating individual guardado só no MySQL | Fonte única de verdade. O MongoDB guarda apenas o texto das reviews e referencia `poi_id` e `utilizador_id`, evitando duplicação e dados contraditórios. |
+| Descrição textual no `poi` | Fica junto dos restantes dados do POI e é a fonte do texto que gera os embeddings. |
+| `POINT SRID 4326` com `SPATIAL INDEX` em `poi` e `destino` | Permite pesquisa por proximidade. O SRID 4326 corresponde a coordenadas GPS (latitude, longitude). |
+| Chave primária `(utilizador_id, poi_id)` em `favorito` | Um utilizador não pode guardar o mesmo POI duas vezes. |
+| Chaves estrangeiras e `ON DELETE CASCADE` em `favorito` | Impedem registos órfãos: apagar um utilizador ou um POI remove os seus favoritos. Só atua no MySQL (ver Consistência). |
+| Ratings e comentários fora do MySQL | Após o feedback, passaram para o MongoDB, junto do POI (padrão Subset): são lidos sempre com o POI e crescem sem limite. |
 
 #### Desempenho
 
-- Índices de chave primária e de unicidade (`email`, `(nome, pais)` em destino, `(utilizador_id, poi_id)` em rating).
+- Índices de chave primária e de unicidade (`email`, `(nome, pais)` em destino).
 - Índice composto `(destino_id, categoria_id)` em `poi`, para as listagens por destino e categoria.
-- Índices em `rating(poi_id)` e `favorito(poi_id)`, para consultar por POI.
-- A média dos ratings calcula-se com `AVG`. *(Decisão em aberto: ver questão na secção 5.)*
-- Na pesquisa por proximidade, filtra-se primeiro por uma caixa envolvente que usa o índice espacial e só depois se calcula a distância exata nos candidatos, porque `ST_Distance_Sphere` não usa o índice.
+- Índice em `favorito(poi_id)`; a chave primária `(utilizador_id, poi_id)` serve as consultas por utilizador.
+- Pesquisa por proximidade com `ST_Distance` (distância em metros). No cenário de índices comparamos com um filtro por caixa envolvente, que usa o índice espacial.
 
 #### Escalabilidade
 
-A tabela que mais cresce é `rating`. O acesso faz-se sempre por `poi_id` ou `utilizador_id`, ambos indexados, por isso o crescimento afeta sobretudo o tamanho dos índices e não a forma das consultas.
+A tabela que mais cresce é `favorito`. O acesso faz-se sempre por `utilizador_id` ou `poi_id`, ambos indexados. A tabela `poi` cresce devagar.
 
 #### Consistência
 
-O InnoDB garante transações ACID dentro do MySQL. Entre bases não há transações distribuídas: o `ON DELETE CASCADE` só limpa o MySQL, por isso, ao apagar ou alterar um POI, a aplicação atualiza também o documento no MongoDB e o vetor no Qdrant.
+O InnoDB garante transações ACID dentro do MySQL. Entre bases não há transações distribuídas: ao apagar um POI, a aplicação remove também o documento no MongoDB (ratings e comentários) e o vetor no Qdrant.
 
 #### Manutenção
 
 O esquema está versionado em `sql/schema.sql`, as regras de integridade estão na própria base (e não espalhadas pelo código) e a estrutura fixa torna as alterações explícitas e controladas.
-
 
 ### 3.2 MongoDB
 
@@ -155,7 +153,7 @@ A utilização de duas coleções com responsabilidades distintas facilita a man
 
 **Como está organizada.** Uma coleção `pois`. Cada ponto tem como `id` o `poi.id` do MySQL, um vetor de 384 dimensões e o payload `nome`, `cidade` e `categoria`. Diagrama em [`qdrant_ponto.md`](qdrant_ponto.md). O texto que gera o vetor junta nome, categoria, cidade e descrição ("texto enriquecido").
 
-**Relações.** Não há relações dentro do Qdrant. A ligação às outras bases faz-se só pelo identificador: o `id` do ponto é o `poi.id`, e os `poi_id` de favoritos e ratings (MySQL) e dos eventos (MongoDB) servem como exemplos positivos e negativos nas recomendações.
+**Relações.** Não há relações dentro do Qdrant. A ligação às outras bases faz-se só pelo identificador: o `id` do ponto é o `poi.id`, e os `poi_id` dos favoritos (MySQL) e dos ratings e eventos (MongoDB) servem como exemplos positivos e negativos nas recomendações.
 
 **Operações principais.**
 - Indexação: gerar os embeddings em lote e fazer `upsert`; recriar a coleção quando muda o modelo ou o formato do texto.
@@ -214,8 +212,8 @@ A aplicação é um backend em Python organizado em camadas:
 
 | Base | Papel |
 |---|---|
-| MySQL | Fonte de verdade dos dados estruturados: utilizadores, destinos, categorias, POIs, favoritos e ratings. Cria o `poi.id` e o `utilizador.id`. |
-| MongoDB | Preferências do utilizador e histórico de atividade, com estrutura flexível. |
+| MySQL | Fonte de verdade dos dados estruturados: utilizadores, destinos, categorias, POIs e favoritos. Cria o `poi.id` e o `utilizador.id`. |
+| MongoDB | Preferências e histórico de atividade do utilizador, e ratings e comentários dos POIs, com estrutura flexível. |
 | Qdrant | Vetores dos POIs para pesquisa por semelhança e recomendações. Cópia derivada do MySQL. |
 
 **Princípios da interação entre sistemas:**
@@ -228,20 +226,20 @@ A aplicação é um backend em Python organizado em camadas:
 
 Diagramas de sequência em [`arquitetura.md`](arquitetura.md).
 
-**1. Pesquisa em linguagem natural.** O serviço converte a pergunta num vetor (prefixo `query:`), e o Qdrant devolve os `poi_id` mais próximos, com filtro opcional por cidade e categoria. O MySQL devolve os dados estruturados e o rating médio desses POIs numa só consulta (`WHERE id IN (...)`). O MongoDB regista a pesquisa no histórico. A ordem final é a do Qdrant (semelhança).
+**1. Pesquisa em linguagem natural.** O serviço converte a pergunta num vetor (prefixo `query:`), e o Qdrant devolve os `poi_id` mais próximos, com filtro opcional por cidade e categoria. O MySQL devolve os dados estruturados desses POIs numa só consulta (`WHERE id IN (...)`) e o MongoDB o rating médio. O MongoDB regista a pesquisa no histórico. A ordem final é a do Qdrant (semelhança).
 
-**2. Página do POI.** O MySQL devolve os dados do POI e a média dos ratings. O Qdrant faz duas recomendações a partir do vetor guardado do próprio POI: uma filtrada pela cidade ("nesta cidade") e outra que a exclui ("noutros destinos"). Fizemos dois blocos porque, numa só lista, a categoria pesava mais do que a cidade e os resultados misturavam destinos. O MongoDB regista a visualização.
+**2. Página do POI.** O MySQL devolve os dados do POI. O MongoDB devolve o rating médio e os comentários mais recentes, guardados no documento do POI (padrão Subset). O Qdrant faz duas recomendações a partir do vetor guardado do próprio POI: uma filtrada pela cidade ("nesta cidade") e outra que a exclui ("noutros destinos"). Fizemos dois blocos porque, numa só lista, a categoria pesava mais do que a cidade e os resultados misturavam destinos. O MongoDB regista a visualização.
 
-**3. Recomendações personalizadas.** O MongoDB fornece os interesses do perfil e os POIs já vistos. O MySQL fornece os favoritos e os ratings: favoritos e ratings ≥ 4 são exemplos positivos e ratings ≤ 2 são negativos. O Qdrant recomenda POIs próximos dos positivos e afastados dos negativos (estratégia `best_score`), excluindo os já vistos. Sem positivos (utilizador novo), usa-se a pesquisa semântica com os interesses como texto; como o modelo é multilingue, interesses em inglês encontram POIs descritos em português. O MySQL devolve os detalhes.
+**3. Recomendações personalizadas.** O MongoDB fornece os interesses do perfil, os POIs já vistos e os ratings do utilizador; o MySQL fornece os favoritos. Favoritos e ratings ≥ 4 são exemplos positivos e ratings ≤ 2 são negativos. O Qdrant recomenda POIs próximos dos positivos e afastados dos negativos (estratégia `best_score`), excluindo os já vistos. Sem positivos (utilizador novo), usa-se a pesquisa semântica com os interesses como texto; como o modelo é multilingue, interesses em inglês encontram POIs descritos em português. O MySQL devolve os detalhes.
 
 ### 4.3 Justificação das escolhas
 
 | Critério | MySQL | MongoDB | Qdrant |
 |---|---|---|---|
 | Tipo de dados | Estruturados, esquema fixo | Semiestruturados, campos variáveis | Vetores densos + payload pequeno |
-| Operações | `JOIN`, `AVG`, integridade referencial, proximidade espacial | Escritas frequentes de eventos, leitura do perfil por `user_id` | Pesquisa por semelhança (k vizinhos mais próximos) com filtros |
+| Operações | `JOIN`, integridade referencial, proximidade espacial | Escritas frequentes de eventos, leitura do perfil por `user_id` | Pesquisa por semelhança (k vizinhos mais próximos) com filtros |
 | Desempenho | Índices B-tree e espacial | Índices `user_id` e `(user_id, timestamp)` | Índice HNSW (aproximado) + índices de payload |
-| Escalabilidade | Cresce sobretudo `rating`, sempre acedida por chaves indexadas | Histórico cresce sem limite; suporta sharding | Nº de POIs cresce devagar; suporta shards e quantização |
+| Escalabilidade | Cresce sobretudo `favorito`, sempre acedida por chaves indexadas | Histórico cresce sem limite; suporta sharding | Nº de POIs cresce devagar; suporta shards e quantização |
 | Flexibilidade | Baixa (alterar o esquema é explícito) | Alta (novos campos sem migração) | Mudar de modelo obriga a reindexar |
 | Consistência | ACID, fonte de verdade | Referências lógicas, validadas pela aplicação | Cópia derivada, consistência eventual |
 | Complexidade das queries | SQL declarativo, junções complexas | Filtros e agregações sobre documentos | Uma operação de semelhança + filtro |
@@ -256,7 +254,3 @@ Diagramas de sequência em [`arquitetura.md`](arquitetura.md).
 3. **Avaliação da pesquisa semântica.** Medimos a qualidade com 50 pesquisas de teste sobre 80 POIs (acerto no 1.º resultado e no top 5). Chega, ou espera-se outra métrica (por exemplo, recall@k ou MRR) ou um conjunto maior?
 4. **Cenário de índices no Qdrant.** Para a análise de índices pensamos comparar a pesquisa com filtro com e sem índice de payload, e a pesquisa HNSW com a pesquisa exata (`exact=True`). Algum destes cenários é o mais adequado?
 5. **Limiar de semelhança.** Os scores do E5 ficam muito próximos (0,85 a 0,92), por isso ordenamos por ranking (top k) e não usamos um limiar fixo. Esta abordagem é adequada?
-  
-### Base de dados relacional
-
-1. **Média dos ratings.** Calculamos a média com `AVG(valor)` sobre `rating`, apoiada por um índice em `poi_id`. A alternativa é guardar a média numa coluna de `poi` (padrão Computed), atualizada a cada novo rating: acelera a leitura, mas obriga a mantê-la coerente. Qual é preferível?
