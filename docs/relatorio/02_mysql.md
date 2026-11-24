@@ -5,7 +5,7 @@
 ## Modelo e decisões
 **O que guarda.** Dados estruturados e com relações bem definidas: utilizadores, destinos, categorias, POIs (nome, morada, coordenadas, preço médio), favoritos e ratings.
 
-**Como está organizada.** Seis tabelas (`utilizador`, `destino`, `categoria`, `poi`, `favorito`, `rating`). Diagrama ER em [`mysql_er.md`](mysql_er.md) e esquema executável em [`sql/schema.sql`](../../sql/schema.sql).
+**Como está organizada.** Seis tabelas (`utilizador`, `destino`, `categoria`, `poi`, `favorito`, `rating`). Diagrama ER em [`mysql_er_img.svg`](img/mysql_er_img.svg) e esquema executável em [`sql/schema.sql`](../../sql/schema.sql).
 
 **Relações.**
 - Um destino tem muitos POIs e uma categoria classifica muitos POIs (1:N).
