@@ -16,16 +16,16 @@ repo = MySQLRepository()
 
 # Dados de teste
 cat = repo.criar_categoria("TESTE_monumento")
-porto = repo.criar_destino("TESTE_Porto", "Portugal", 41.1496, -8.6109)
-clerigos = repo.criar_poi(porto, cat, "TESTE_Clérigos", 41.1458, -8.6145, descricao="Torre barroca.")
-bolhao = repo.criar_poi(porto, cat, "TESTE_Bolhão", 41.1497, -8.6058)
-moledo = repo.criar_poi(porto, cat, "TESTE_Moledo", 41.8389, -8.8667)
+porto = repo.criar_destino("TESTE_Porto", "Portugal")
+clerigos = repo.criar_poi(porto, cat, "TESTE_Clérigos", descricao="Torre barroca.")
+bolhao = repo.criar_poi(porto, cat, "TESTE_Bolhão")
+moledo = repo.criar_poi(porto, cat, "TESTE_Moledo")
 ana = repo.criar_utilizador("TESTE_Ana", "teste_ana@exemplo.pt")
 
 try:
     poi = repo.obter_poi(clerigos)
-    verificar(round(poi["latitude"], 4) == 41.1458 and round(poi["longitude"], 4) == -8.6145,
-              "coordenadas lidas = coordenadas gravadas")
+    verificar(poi["descricao"] == "Torre barroca." and poi["destino"] == "TESTE_Porto",
+              "obter_poi devolve a descrição e o nome do destino")
 
     verificar(len(repo.listar_pois(porto)) == 3, "listar_pois devolve os 3 POIs do destino")
 
@@ -35,12 +35,6 @@ try:
     repo.adicionar_favorito(ana, clerigos)
     repo.adicionar_favorito(ana, clerigos)
     verificar(repo.listar_favoritos(ana) == [clerigos], "o mesmo favorito não fica duplicado")
-
-    # Só os POIs de teste (a base pode ter outros POIs perto, carregados pelo script de dados)
-    nomes = [p["nome"] for p in repo.pois_proximos(41.1458, -8.6145, raio_m=1000)
-             if p["nome"].startswith("TESTE_")]
-    verificar(nomes == ["TESTE_Clérigos", "TESTE_Bolhão"],
-              "pois_proximos: só os que estão a menos de 1 km, por distância")
 finally:
     # Limpeza (os favoritos são apagados em cascata)
     for poi_id in (clerigos, bolhao, moledo):
