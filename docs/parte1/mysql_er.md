@@ -19,7 +19,6 @@ erDiagram
     varchar nome
     varchar pais
     varchar regiao
-    point localizacao
   }
   CATEGORIA {
     smallint id PK
@@ -32,7 +31,6 @@ erDiagram
     varchar nome
     varchar morada
     text descricao
-    point localizacao
     decimal preco_medio
   }
   FAVORITO {
@@ -46,7 +44,7 @@ erDiagram
 - `poi.id` e o identificador canonico usado no MongoDB e no Qdrant.
 - O rating individual fica so no MySQL (fonte de verdade); o MongoDB guarda o texto das reviews e referencia `poi_id` e `utilizador_id`.
 - Restricao `UNIQUE (utilizador_id, poi_id)` em `rating`: um utilizador so avalia um POI uma vez.
-- Indices espaciais em `poi` e `destino` (pesquisa por proximidade); indice composto `(destino_id, categoria_id)` em `poi`.
+- Índice composto `(destino_id, categoria_id)` em `poi`. A localização dos POIs fica no MongoDB (decisão após o feedback da Parte I).
 - A descrição textual de cada POI fica na coluna `poi.descricao` do MySQL e é a base dos embeddings guardados no Qdrant.
 - As preferências do utilizador (categorias preferidas) ficam no MongoDB. Também servem para recomendar a utilizadores novos. *(a confirmar)*
 - O histórico de atividade do utilizador fica no MongoDB. *(a confirmar)*
