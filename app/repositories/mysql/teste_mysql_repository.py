@@ -36,7 +36,9 @@ try:
     repo.adicionar_favorito(ana, clerigos)
     verificar(repo.listar_favoritos(ana) == [clerigos], "o mesmo favorito não fica duplicado")
 
-    nomes = [p["nome"] for p in repo.pois_proximos(41.1458, -8.6145, raio_m=1000)]
+    # Só os POIs de teste (a base pode ter outros POIs perto, carregados pelo script de dados)
+    nomes = [p["nome"] for p in repo.pois_proximos(41.1458, -8.6145, raio_m=1000)
+             if p["nome"].startswith("TESTE_")]
     verificar(nomes == ["TESTE_Clérigos", "TESTE_Bolhão"],
               "pois_proximos: só os que estão a menos de 1 km, por distância")
 finally:
