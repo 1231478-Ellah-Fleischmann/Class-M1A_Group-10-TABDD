@@ -4,6 +4,7 @@ mysql-connector-python
 pymongo
 sentence-transformers
 pandas
+matplotlib
 
 # Base de dados vetorial
 qdrant-client>=1.10

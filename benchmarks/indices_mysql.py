@@ -11,14 +11,19 @@ Assim, o tempo da rede (casa -> servidor do DEI) não entra na comparação.
 
 Correr a partir da raiz do repositório (depois de data.carregar_mysql):
     python -m benchmarks.indices_mysql
+Os resultados ficam em benchmarks/resultados/indices_mysql.csv
+(o gráfico faz-se com: python -m benchmarks.grafico_indices_mysql).
 """
 
+import csv
 import re
 import statistics
+from pathlib import Path
 
 from app.repositories.mysql.mysql_repository import MySQLRepository
 
 REPETICOES = 20
+FICHEIRO_RESULTADOS = Path("benchmarks/resultados/indices_mysql.csv")
 
 # Cada cenário compara duas versões da mesma pesquisa.
 # %(destino)s e %(categoria)s são substituídos pelo id do Porto e da categoria "museu".
@@ -77,6 +82,7 @@ cursor.execute("SELECT id FROM categoria WHERE nome = 'museu'")
 museu = cursor.fetchone()[0]
 
 ids = {"destino": porto, "categoria": museu}
+resultados = []
 
 for cenario in CENARIOS:
     print("\n" + cenario["titulo"])
@@ -86,7 +92,18 @@ for cenario in CENARIOS:
         tempos = [tempo_servidor_ms(cursor, sql, ids) for _ in range(REPETICOES)]
         print(f"  {rotulo:<13}{tipo:<8}{str(indice):<26}{linhas:>16}"
               f"{statistics.mean(tempos):>11.3f} ms")
+        resultados.append({"cenario": cenario["titulo"].split(" - ")[0], "versao": rotulo,
+                           "acesso": tipo, "indice": indice, "linhas": linhas,
+                           "tempo_ms": round(statistics.mean(tempos), 3)})
 
 print(f"\n(tempo médio de {REPETICOES} execuções, medido no servidor)")
+
+# Guardar os resultados (para o gráfico e para o relatório)
+FICHEIRO_RESULTADOS.parent.mkdir(parents=True, exist_ok=True)
+with open(FICHEIRO_RESULTADOS, "w", newline="", encoding="utf-8") as f:
+    escritor = csv.DictWriter(f, fieldnames=resultados[0].keys())
+    escritor.writeheader()
+    escritor.writerows(resultados)
+print(f"Resultados guardados em {FICHEIRO_RESULTADOS}")
 cursor.close()
 repo.close()

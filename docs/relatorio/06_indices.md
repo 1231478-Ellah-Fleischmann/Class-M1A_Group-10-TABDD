@@ -10,12 +10,14 @@ Para cada cenário: a consulta, o índice criado, como foi medido, os resultados
 
 | Cenário | Versão | Acesso | Índice | Linhas (estim.) | Tempo médio |
 |---|---|---|---|---|---|
-| 1. Quem guardou o POI 5 (`favorito`, ~30 000 linhas) | com índice | `ref` | `ix_favorito_poi` | 348 | 0,25 ms |
-| | sem índice | `index` | `PRIMARY` | 29 162 | 41,76 ms |
-| 2. Museus do Porto (`poi`, 80 linhas) | com índice | `ref` | `ix_poi_destino_categoria` | 3 | 0,04 ms |
-| | sem índice | `ref` | `fk_poi_categoria` | 19 | 0,11 ms |
+| 1. Quem guardou o POI 5 (`favorito`, ~30 000 linhas) | com índice | `ref` | `ix_favorito_poi` | 348 | 0,33 ms |
+| | sem índice | `index` | `PRIMARY` | 29 162 | 20,40 ms |
+| 2. Museus do Porto (`poi`, 80 linhas) | com índice | `ref` | `ix_poi_destino_categoria` | 3 | 0,05 ms |
+| | sem índice | `ref` | `fk_poi_categoria` | 19 | 0,12 ms |
 | 3. Ordem das colunas em `(destino_id, categoria_id)` | só 1.ª coluna | `ref` | `ix_poi_destino_categoria` | 7 | 0,09 ms |
-| | só 2.ª coluna | `ALL` | — | 80 | 0,16 ms |
+| | só 2.ª coluna | `ALL` | — | 80 | 0,09 ms |
+
+![Tempo de execução com e sem índice no MySQL](img/indices_mysql.png)
 
 Os tempos variam entre execuções, porque o servidor do DEI é partilhado; os planos e o número de linhas lidas mantiveram-se iguais em todas as execuções.
 
@@ -23,7 +25,7 @@ Os tempos variam entre execuções, porque o servidor do DEI é partilhado; os p
 
 **Cenário 2: o índice não traz benefício relevante.** Com apenas 80 linhas, qualquer leitura é imediata e a diferença é de centésimas de milissegundo. Além disso, sem o índice composto o MySQL usou outro índice que já existia (o da chave estrangeira de `categoria_id`). Em tabelas pequenas, um índice adicional custa espaço e tempo nas escritas sem ganho nas leituras.
 
-**Cenário 3: a ordem das colunas importa.** O índice `(destino_id, categoria_id)` está ordenado primeiro por `destino_id`. Uma pesquisa só por `destino_id` usa o índice (`ref`); uma pesquisa só por `categoria_id` não o consegue usar, e o MySQL lê a tabela inteira (`ALL`), mesmo com `FORCE INDEX`.
+**Cenário 3: a ordem das colunas importa.** O índice `(destino_id, categoria_id)` está ordenado primeiro por `destino_id`. Uma pesquisa só por `destino_id` usa o índice (`ref`); uma pesquisa só por `categoria_id` não o consegue usar, e o MySQL lê a tabela inteira (`ALL`), mesmo com `FORCE INDEX`. Com apenas 80 linhas, o tempo é praticamente igual nas duas versões (nesta execução, a segunda foi até ligeiramente mais rápida): a diferença está no plano, não no tempo.
 
 **Conclusão.** Os índices compensam quando a tabela tem volume e o filtro é seletivo, e só servem se a consulta usar as primeiras colunas do índice. Em tabelas pequenas, o ganho é desprezável.
 
