@@ -3,7 +3,7 @@
 Os serviços não escrevem SQL: chamam estas funções.
 A ligação usa as variáveis MYSQL_* do ficheiro .env.
 
-Nota: com SRID 4326, o MySQL guarda os pontos como (latitude longitude).
+A localização dos POIs (coordenadas) está no MongoDB.
 """
 
 import os
@@ -13,13 +13,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Leitura base de um POI: dados do POI, nome do destino e da categoria e coordenadas.
+# Leitura base de um POI: dados do POI e nome do destino e da categoria.
 # (Os ratings e comentários estão no MongoDB.)
 SELECT_POI = """
     SELECT p.id, p.nome, p.morada, p.descricao, p.preco_medio,
-           d.nome AS destino, c.nome AS categoria,
-           ST_Latitude(p.localizacao)  AS latitude,
-           ST_Longitude(p.localizacao) AS longitude
+           d.nome AS destino, c.nome AS categoria
     FROM poi p
     JOIN destino d   ON d.id = p.destino_id
     JOIN categoria c ON c.id = p.categoria_id
@@ -69,11 +67,10 @@ class MySQLRepository:
         return linhas[0] if linhas else None
 
     # --- destinos e categorias --------------------------------------------
-    def criar_destino(self, nome, pais, latitude, longitude, regiao=None):
+    def criar_destino(self, nome, pais, regiao=None):
         return self.escrever(
-            "INSERT INTO destino (nome, pais, regiao, localizacao) "
-            "VALUES (%s, %s, %s, ST_GeomFromText(%s, 4326))",
-            (nome, pais, regiao, f"POINT({latitude} {longitude})"),
+            "INSERT INTO destino (nome, pais, regiao) VALUES (%s, %s, %s)",
+            (nome, pais, regiao),
         )
 
     def criar_categoria(self, nome):
@@ -86,15 +83,13 @@ class MySQLRepository:
         return self.ler("SELECT id, nome FROM categoria ORDER BY nome")
 
     # --- POIs -------------------------------------------------------------
-    def criar_poi(self, destino_id, categoria_id, nome, latitude, longitude,
+    def criar_poi(self, destino_id, categoria_id, nome,
                   morada=None, descricao=None, preco_medio=None, poi_id=None):
         """poi_id é opcional: permite usar o mesmo id que o POI tem no Qdrant."""
         return self.escrever(
-            "INSERT INTO poi (id, destino_id, categoria_id, nome, morada, descricao, "
-            "localizacao, preco_medio) "
-            "VALUES (%s, %s, %s, %s, %s, %s, ST_GeomFromText(%s, 4326), %s)",
-            (poi_id, destino_id, categoria_id, nome, morada, descricao,
-             f"POINT({latitude} {longitude})", preco_medio),
+            "INSERT INTO poi (id, destino_id, categoria_id, nome, morada, descricao, preco_medio) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (poi_id, destino_id, categoria_id, nome, morada, descricao, preco_medio),
         )
 
     def obter_poi(self, poi_id):
@@ -133,15 +128,3 @@ class MySQLRepository:
         linhas = self.ler("SELECT poi_id FROM favorito WHERE utilizador_id = %s",
                           (utilizador_id,))
         return [linha["poi_id"] for linha in linhas]
-
-    # --- proximidade ------------------------------------------------------
-    # Só se a localização ficar no MySQL (decisão do grupo em aberto).
-    def pois_proximos(self, latitude, longitude, raio_m=1000):
-        """POIs a menos de raio_m metros de um ponto, do mais perto para o mais longe."""
-        return self.ler(
-            "SELECT id, nome, ST_Distance(localizacao, ST_GeomFromText(%s, 4326)) AS distancia_m "
-            "FROM poi "
-            "HAVING distancia_m <= %s "
-            "ORDER BY distancia_m",
-            (f"POINT({latitude} {longitude})", raio_m),
-        )

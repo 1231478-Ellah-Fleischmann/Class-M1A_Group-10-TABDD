@@ -19,10 +19,8 @@ CREATE TABLE destino (
   nome         VARCHAR(100)  NOT NULL,
   pais         VARCHAR(60)   NOT NULL,
   regiao       VARCHAR(100)  NULL,
-  localizacao  POINT SRID 4326 NOT NULL,
   PRIMARY KEY (id),
-  UNIQUE KEY uq_destino_nome_pais (nome, pais),
-  SPATIAL INDEX sx_destino_localizacao (localizacao)
+  UNIQUE KEY uq_destino_nome_pais (nome, pais)
 ) ENGINE=InnoDB;
 
 CREATE TABLE categoria (
@@ -43,13 +41,11 @@ CREATE TABLE poi (
   nome          VARCHAR(200)      NOT NULL,
   morada        VARCHAR(255)      NULL,
   descricao     TEXT              NULL,
-  localizacao   POINT SRID 4326   NOT NULL,
   preco_medio   DECIMAL(8,2)      NULL,
   PRIMARY KEY (id),
   CONSTRAINT fk_poi_destino   FOREIGN KEY (destino_id)   REFERENCES destino (id),
   CONSTRAINT fk_poi_categoria FOREIGN KEY (categoria_id) REFERENCES categoria (id),
-  KEY ix_poi_destino_categoria (destino_id, categoria_id),
-  SPATIAL INDEX sx_poi_localizacao (localizacao)
+  KEY ix_poi_destino_categoria (destino_id, categoria_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE favorito (

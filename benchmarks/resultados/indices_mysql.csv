@@ -1,0 +1,7 @@
+cenario,versao,acesso,indice,linhas,tempo_ms
+Cenário 1,com índice,ref,ix_favorito_poi,348,0.325
+Cenário 1,sem índice,index,PRIMARY,29162,20.397
+Cenário 2,com índice,ref,ix_poi_destino_categoria,3,0.052
+Cenário 2,sem índice,ref,fk_poi_categoria,19,0.118
+Cenário 3,1.ª coluna,ref,ix_poi_destino_categoria,7,0.09
+Cenário 3,só 2.ª col.,ALL,,80,0.085

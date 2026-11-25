@@ -6,6 +6,29 @@ Para cada cenário: a consulta, o índice criado, como foi medido, os resultados
 
 ## Cenário relacional (MySQL)
 
+**Como medimos.** O script `benchmarks/indices_mysql.py` corre cada consulta em duas versões. Nos cenários 1 e 2, "sem índice" usa `IGNORE INDEX`, que impede o MySQL de usar aquele índice sem alterar o esquema. O plano vem do `EXPLAIN` e o tempo do `EXPLAIN ANALYZE`, medido dentro do servidor (para não incluir a rede), em média de 20 execuções. Dados: 80 POIs, 2000 utilizadores e 30 177 favoritos (sintéticos, gerados por `data/carregar_mysql.py`).
+
+| Cenário | Versão | Acesso | Índice | Linhas (estim.) | Tempo médio |
+|---|---|---|---|---|---|
+| 1. Quem guardou o POI 5 (`favorito`, ~30 000 linhas) | com índice | `ref` | `ix_favorito_poi` | 348 | 0,33 ms |
+| | sem índice | `index` | `PRIMARY` | 29 162 | 20,40 ms |
+| 2. Museus do Porto (`poi`, 80 linhas) | com índice | `ref` | `ix_poi_destino_categoria` | 3 | 0,05 ms |
+| | sem índice | `ref` | `fk_poi_categoria` | 19 | 0,12 ms |
+| 3. Ordem das colunas em `(destino_id, categoria_id)` | só 1.ª coluna | `ref` | `ix_poi_destino_categoria` | 7 | 0,09 ms |
+| | só 2.ª coluna | `ALL` | — | 80 | 0,09 ms |
+
+![Tempo de execução com e sem índice no MySQL](img/indices_mysql.png)
+
+Os tempos variam entre execuções, porque o servidor do DEI é partilhado; os planos e o número de linhas lidas mantiveram-se iguais em todas as execuções.
+
+**Cenário 1: o índice compensa.** A tabela `favorito` tem volume e o filtro por `poi_id` é seletivo. Com o índice secundário na chave estrangeira, o MySQL vai direto às linhas desse POI (`ref`). Sem ele, percorre a chave primária inteira (`index`), porque a chave `(utilizador_id, poi_id)` começa por `utilizador_id` e não serve para procurar só por `poi_id`. A consulta fica muito mais lenta e lê cerca de 80 vezes mais linhas.
+
+**Cenário 2: o índice não traz benefício relevante.** Com apenas 80 linhas, qualquer leitura é imediata e a diferença é de centésimas de milissegundo. Além disso, sem o índice composto o MySQL usou outro índice que já existia (o da chave estrangeira de `categoria_id`). Em tabelas pequenas, um índice adicional custa espaço e tempo nas escritas sem ganho nas leituras.
+
+**Cenário 3: a ordem das colunas importa.** O índice `(destino_id, categoria_id)` está ordenado primeiro por `destino_id`. Uma pesquisa só por `destino_id` usa o índice (`ref`); uma pesquisa só por `categoria_id` não o consegue usar, e o MySQL lê a tabela inteira (`ALL`), mesmo com `FORCE INDEX`. Com apenas 80 linhas, o tempo é praticamente igual nas duas versões (nesta execução, a segunda foi até ligeiramente mais rápida): a diferença está no plano, não no tempo.
+
+**Conclusão.** Os índices compensam quando a tabela tem volume e o filtro é seletivo, e só servem se a consulta usar as primeiras colunas do índice. Em tabelas pequenas, o ganho é desprezável.
+
 ## Cenário NoSQL (MongoDB)
 
 ### Consulta analisada
