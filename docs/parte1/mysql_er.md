@@ -40,15 +40,12 @@ erDiagram
   }
 ```
 
-## Pontos a discutir com o grupo
-- `poi.id` e o identificador canonico usado no MongoDB e no Qdrant.
-- O rating individual fica so no MySQL (fonte de verdade); o MongoDB guarda o texto das reviews e referencia `poi_id` e `utilizador_id`.
-- Restricao `UNIQUE (utilizador_id, poi_id)` em `rating`: um utilizador so avalia um POI uma vez.
-- Índice composto `(destino_id, categoria_id)` em `poi`. A localização dos POIs fica no MongoDB (decisão após o feedback da Parte I).
-- A descrição textual de cada POI fica na coluna `poi.descricao` do MySQL e é a base dos embeddings guardados no Qdrant.
-- As preferências do utilizador (categorias preferidas) ficam no MongoDB. Também servem para recomendar a utilizadores novos. *(a confirmar)*
-- O histórico de atividade do utilizador fica no MongoDB. *(a confirmar)*
+## Notas de modelação
+- `poi.id` é o identificador canónico usado também no MongoDB e no Qdrant.
+- Índice composto `(destino_id, categoria_id)` em `poi`, para as listagens por destino e categoria.
+- A descrição textual de cada POI fica em `poi.descricao` e é a base dos embeddings guardados no Qdrant.
+- Os ratings e comentários dos POIs ficam no MongoDB (sugestão da professora no feedback da Parte I).
+- A localização dos POIs fica no MongoDB, com índice `2dsphere` (sugestão da professora no feedback da Parte I).
+- As preferências e o histórico de atividade do utilizador ficam no MongoDB.
 - Ao apagar um POI, o `ON DELETE CASCADE` só limpa o MySQL; a aplicação apaga também o documento no MongoDB e o vetor no Qdrant.
-- O payload do Qdrant vai guardar `destino_id` e `categoria_id` (em vez dos nomes), para filtrar por número e não ficar desatualizado se um nome mudar no MySQL.
-- Rating médio: calculado com `AVG` ou guardado numa coluna de `poi` (padrão Computed)? A discutir.
-- Os ratings e comentários dos POIs ficam no MongoDB (decisão após o feedback da Parte I).
+- O payload do Qdrant guarda os nomes da cidade e da categoria, para filtrar a pesquisa semântica sem consultar o MySQL.
